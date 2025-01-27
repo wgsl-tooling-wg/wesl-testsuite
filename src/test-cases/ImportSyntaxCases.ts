@@ -7,30 +7,30 @@ export const importSyntaxCases: ParsingTest[] = [
   { src: "import;", fails: true },
   { src: "import foo", fails: true },
   { src: "import foo;", fails: true },
-  { src: "import super", fails: true },
-  { src: "import super::", fails: true },
-  { src: "import super::super", fails: true },
-  { src: "import foo::{}", fails: true },
-  { src: "import foo::a as b::b", fails: true },
-  { src: "import foo::super::bar::baz", fails: true },
-  { src: "import foo::bee as boo::bar", fails: true },
+  { src: "import super;", fails: true },
+  { src: "import super::;", fails: true },
+  { src: "import super::super;", fails: true },
+  { src: "import foo::{};", fails: true },
+  { src: "import foo::a as b::b;", fails: true },
+  { src: "import foo::super::bar::baz;", fails: true },
+  { src: "import foo::bee as boo::bar;", fails: true },
 
   /* ------  success cases  -------   */
 
-  { src: "import super::foo::bar" },
-  { src: "import super::super::foo::bar" },
-  { src: `import super::b::c::d` },
-  { src: "import super::foo ::bar" },
-  { src: `import a::b::c` },
-  { src: "import foo::bar" },
-  { src: "import foo::{a,b}" },
-  { src: "import foo::{a, b}" },
-  { src: "import foo::bar::{a, b}" },
-  { src: "import a::{b, c }" },
-  { src: "import foo::a as b" },
-  { src: `import a::b::{c as foo}` },
+  { src: "import super::foo::bar;" },
+  { src: "import super::super::foo::bar;" },
+  { src: `import super::b::c::d;` },
+  { src: "import super::foo ::bar;" },
+  { src: `import a::b::c;` },
+  { src: "import foo::bar;" },
+  { src: "import foo::{a,b};" },
+  { src: "import foo::{a, b};" },
+  { src: "import foo::bar::{a, b};" },
+  { src: "import a::{b, c };" },
+  { src: "import foo::a as b;" },
+  { src: `import a::b::{c as foo};` },
   {
-    src: `import super::foo::bar
+    src: `import super::foo::bar;
           fn main() {}`,
   },
   {
@@ -39,7 +39,7 @@ export const importSyntaxCases: ParsingTest[] = [
              mesh_view_bindings,
              utils::{PI, noise},
              lighting
-           }`,
+           };`,
   },
 ];
 
