@@ -2,10 +2,10 @@ import { WgslTestSrc } from "../TestSchema.js";
 
 export const importCases: WgslTestSrc[] = [
   {
-    name: `import ./bar/foo`,
+    name: `import package::bar::foo;`,
     src: {
       "./main.wgsl": `
-          import ./bar/foo 
+          import package::bar::foo;
           fn main() {
             foo();
           }
@@ -33,7 +33,7 @@ export const importCases: WgslTestSrc[] = [
     name: `import foo as bar`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo as bar;
+        import package::file1::foo as bar;
 
         fn main() {
           bar();
@@ -48,8 +48,8 @@ export const importCases: WgslTestSrc[] = [
     name: `import twice doesn't get two copies`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo
-        import ./file2/bar
+        import package::file1::foo;
+        import package::file2::bar;
 
         fn main() {
           foo();
@@ -60,7 +60,7 @@ export const importCases: WgslTestSrc[] = [
         fn foo() { /* fooImpl */ }
       `,
       "./file2.wgsl": `
-        import ./file1/foo
+        import package::file1::foo;
         fn bar() { foo(); }
       `,
     },
@@ -69,7 +69,7 @@ export const importCases: WgslTestSrc[] = [
     name: `imported fn calls support fn with root conflict`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo; 
+        import package::file1::foo; 
 
         fn main() { foo(); }
         fn conflicted() { }
@@ -87,8 +87,8 @@ export const importCases: WgslTestSrc[] = [
     name: `import twice with two as names`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo as bar
-        import ./file1/foo as zap
+        import package::file1::foo as bar;
+        import package::file1::foo as zap;
 
         fn main() { bar(); zap(); }
       `,
@@ -101,7 +101,7 @@ export const importCases: WgslTestSrc[] = [
     name: `import transitive conflicts with main`,
     src: {
       "./main.wgsl": `
-        import ./file1/mid
+        import package::file1::mid;
 
         fn main() {
           mid();
@@ -112,7 +112,7 @@ export const importCases: WgslTestSrc[] = [
         }
       `,
       "./file1.wgsl": `
-        import ./file2/grand
+        import package::file2::grand;
         
         fn mid() { grand(); }
       `,
@@ -126,7 +126,7 @@ export const importCases: WgslTestSrc[] = [
     name: `multiple exports from the same module`,
     src: {
       "./main.wgsl": `
-        import ./file1/{foo, bar}
+        import package::file1::{foo, bar};
 
         fn main() {
           foo();
@@ -144,7 +144,7 @@ export const importCases: WgslTestSrc[] = [
     name: `import and resolve conflicting support function`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo as bar
+        import package::file1::foo as bar;
 
         fn support() { 
           bar();
@@ -164,14 +164,14 @@ export const importCases: WgslTestSrc[] = [
     name: `import support fn that references another import`,
     src: {
       "./main.wgsl": `
-        import ./file1/foo
+        import package::file1::foo;
 
         fn support() { 
           foo();
         }
       `,
       "./file1.wgsl": `
-        import ./file2/bar
+        import package::file2::bar;
 
         fn foo() {
           support();
@@ -194,8 +194,8 @@ export const importCases: WgslTestSrc[] = [
     name: "import support fn from two exports",
     src: {
       "./main.wgsl": `
-        import ./file1/foo
-        import ./file1/bar
+        import package::file1::foo;
+        import package::file1::bar;
         fn main() {
           foo();
           bar();
@@ -219,7 +219,7 @@ export const importCases: WgslTestSrc[] = [
     name: "import a struct",
     src: {
       "./main.wgsl": `
-          import ./file1/AStruct
+          import package::file1::AStruct;
 
           fn main() {
             let a = AStruct(1u); 
@@ -239,7 +239,7 @@ export const importCases: WgslTestSrc[] = [
     name: "import fn with support struct constructor",
     src: {
       "./main.wgsl": `
-        import ./file1/elemOne
+        import package::file1::elemOne;
 
         fn main() {
           let ze = elemOne();
@@ -263,14 +263,14 @@ export const importCases: WgslTestSrc[] = [
     name: "import a transitive struct",
     src: {
       "./main.wgsl": `
-        import ./file1/AStruct
+        import package::file1::AStruct;
 
         struct SrcStruct {
           a: AStruct,
         }
       `,
       "./file1.wgsl": `
-        import ./file2/BStruct
+        import package::file2::BStruct;
 
         struct AStruct {
           s: BStruct,
@@ -288,7 +288,7 @@ export const importCases: WgslTestSrc[] = [
     name: "'import as' a struct",
     src: {
       "./main.wgsl": `
-        import ./file1/AStruct as AA
+        import package::file1::AStruct as AA;
 
         fn foo (a: AA) { }
       `,
@@ -302,7 +302,7 @@ export const importCases: WgslTestSrc[] = [
     name: "import a struct with name conflicting support struct",
     src: {
       "./main.wgsl": `
-        import ./file1/AStruct
+        import package::file1::AStruct;
 
         struct Base {
           b: i32
@@ -341,7 +341,7 @@ export const importCases: WgslTestSrc[] = [
     name: "struct referenced by a fn param",
     src: {
       "./main.wgsl": `
-        import ./file1/foo
+        import package::file1::foo;
 
         fn main() { foo(); }
       `,
@@ -359,7 +359,7 @@ export const importCases: WgslTestSrc[] = [
     name: "const referenced by imported fn",
     src: {
       "./main.wgsl": `
-        import ./file1/foo
+        import package::file1::foo;
 
         fn main() { foo(); }
       `,
@@ -376,7 +376,7 @@ export const importCases: WgslTestSrc[] = [
     name: "fn call with a separator",
     src: {
       "./main.wgsl": `
-        import ./file1/foo
+        import package::file1::foo;
 
         fn main() { foo::bar(); }
       `,
@@ -389,7 +389,7 @@ export const importCases: WgslTestSrc[] = [
     name: "local var to struct",
     src: {
       "./main.wgsl": `
-        import ./file1/AStruct;
+        import package::file1::AStruct;
 
         fn main() {
           var a: AStruct; 
@@ -404,7 +404,7 @@ export const importCases: WgslTestSrc[] = [
     name: "global var to struct",
     src: {
       "./main.wgsl": `
-        import ./file1/Uniforms;
+        import package::file1::Uniforms;
 
         @group(0) @binding(0) var<uniform> u: Uniforms;      
       `,
@@ -417,7 +417,7 @@ export const importCases: WgslTestSrc[] = [
     name: "return type of function",
     src: {
       "./main.wgsl": `
-        import ./file1/A
+        import package::file1::A;
 
         fn b() -> A { }
       `,
@@ -430,7 +430,7 @@ export const importCases: WgslTestSrc[] = [
     name: "import a const",
     src: {
       "./main.wgsl": `
-        import ./file1/conA;
+        import package::file1::conA;
 
         fn m() { let a = conA; }
       `,
@@ -443,7 +443,7 @@ export const importCases: WgslTestSrc[] = [
     name: "import an alias",
     src: {
       "./main.wgsl": `
-        import ./file1/aliasA;
+        import package::file1::aliasA;
 
         fn m() { let a: aliasA = 4; }
       `,
@@ -456,7 +456,7 @@ export const importCases: WgslTestSrc[] = [
     name: "alias f32",
     src: {
       "./main.wgsl": `
-      import ./file1/foo;
+      import package::file1::foo;
       fn main() { foo(); }
       `,
       "./file1.wgsl": `
@@ -470,7 +470,7 @@ export const importCases: WgslTestSrc[] = [
     name: "fn f32()",
     src: {
       "./main.wgsl": `
-      import ./file1/foo;
+      import package::file1::foo;
       fn main() { foo(); }
       `,
       "./file1.wgsl": `
