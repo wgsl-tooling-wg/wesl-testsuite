@@ -6,7 +6,6 @@ export const importSyntaxCases: ParsingTest[] = [
   { src: "import", fails: true },
   { src: "import;", fails: true },
   { src: "import foo", fails: true },
-  { src: "import foo;", fails: true },
   { src: "import super;", fails: true },
   { src: "import super::;", fails: true },
   { src: "import super::super;", fails: true },
@@ -17,6 +16,7 @@ export const importSyntaxCases: ParsingTest[] = [
 
   /* ------  success cases  -------   */
 
+  { src: "import foo;" },
   { src: "import super::foo::bar;" },
   { src: "import super::super::foo::bar;" },
   { src: `import super::b::c::d;` },
