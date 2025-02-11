@@ -5,8 +5,10 @@ export interface WgslTestSrc {
 }
 
 export interface ParsingTest {
-  src: string; 
+  name?: string;
+  src: string;
   fails?: true;
+  message?: string;
 }
 
 export interface BulkTest {
