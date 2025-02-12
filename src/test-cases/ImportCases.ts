@@ -86,6 +86,16 @@ export const importCases: WgslTestSrc[] = [
         import package::file1::foo;
         fn bar() { foo(); }
       `,
+    expectedWgsl: `
+      fn main() {
+        foo();
+        bar();
+      }
+
+      fn foo() { /* fooImpl */ }
+
+      fn bar() { foo(); }
+    `,
     },
   },
   {
@@ -105,6 +115,18 @@ export const importCases: WgslTestSrc[] = [
         fn conflicted(a:i32) {}
       `,
     },
+    expectedWgsl: `
+      fn main() { foo(); }
+
+      fn conflicted() { }
+
+      fn foo() {
+        conflicted0(0);
+        conflicted0(1);
+      }
+
+      fn conflicted0(a:i32) {}
+    `,
   },
   {
     name: `import twice with two as names`,
@@ -119,6 +141,8 @@ export const importCases: WgslTestSrc[] = [
         fn foo() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: `import transitive conflicts with main`,
@@ -143,6 +167,8 @@ export const importCases: WgslTestSrc[] = [
         fn grand() { /* grandImpl */ }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -161,6 +187,8 @@ export const importCases: WgslTestSrc[] = [
         fn bar() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -181,6 +209,8 @@ export const importCases: WgslTestSrc[] = [
         fn support() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -211,6 +241,8 @@ export const importCases: WgslTestSrc[] = [
         fn support() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -236,6 +268,8 @@ export const importCases: WgslTestSrc[] = [
         fn support() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -280,6 +314,8 @@ export const importCases: WgslTestSrc[] = [
       "./file2.wgsl": `
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -305,6 +341,8 @@ export const importCases: WgslTestSrc[] = [
         }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -319,6 +357,8 @@ export const importCases: WgslTestSrc[] = [
         struct AStruct { x: u32 }
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   {
@@ -351,6 +391,8 @@ export const importCases: WgslTestSrc[] = [
         alias MyType = u32;
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "copy diagnostics to output",
@@ -394,6 +436,8 @@ export const importCases: WgslTestSrc[] = [
         }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "fn call with a separator",
@@ -407,6 +451,8 @@ export const importCases: WgslTestSrc[] = [
         fn bar() { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "local var to struct",
@@ -422,6 +468,8 @@ export const importCases: WgslTestSrc[] = [
         struct AStruct { x: u32 }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "global var to struct",
@@ -435,6 +483,8 @@ export const importCases: WgslTestSrc[] = [
         struct Uniforms { model: mat4x4<f32> }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "return type of function",
@@ -461,6 +511,8 @@ export const importCases: WgslTestSrc[] = [
         const conA = 11;
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "import an alias",
@@ -474,6 +526,8 @@ export const importCases: WgslTestSrc[] = [
         alias aliasA = u32;
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "alias f32",
@@ -488,6 +542,8 @@ export const importCases: WgslTestSrc[] = [
       fn foo(a: f32) { }
       `,
     },
+    expectedWgsl: `
+    `,
   },
   {
     name: "fn f32()",
@@ -503,6 +559,8 @@ export const importCases: WgslTestSrc[] = [
       "./file2.wgsl": `
       `,
     },
+    expectedWgsl: `
+    `,
   },
 
   // {
