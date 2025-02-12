@@ -716,10 +716,34 @@ export const importCases: WgslTestSrc[] = [
       fn f32() { }
     `,
   },
+  {
+    name: "circular import",
+    weslSrc: {
+      "./main.wgsl": `
+      import package::file1::foo;
+      fn main() { foo(); }
+      `,
+      "./file1.wgsl": `
+      import package::file2::bar;
+      fn foo() { bar(); }
+      fn fie() {}
+      `,
+      "./file2.wgsl": `
+      import package::file1::fie;
+      fn bar() { fie(); }
+      `,
+    },
+    expectedWgsl: `
+      fn main() { foo(); }
+      fn foo() { bar(); }
+      fn bar() { fie(); }
+      fn fie() {}
+    `,
+  },
 
   // {
   //   name: "",
-  //   src: {
+  //   weslSrc: {
   //     "./main.wgsl": `
   //     `,
   //     "./file1.wgsl": `
@@ -727,7 +751,11 @@ export const importCases: WgslTestSrc[] = [
   //     "./file2.wgsl": `
   //     `,
   //   },
+  //   expectedWgsl: `
+  //   `,
   // },
+
+
 ];
 
 export default importCases;
