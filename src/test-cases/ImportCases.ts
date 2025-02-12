@@ -14,6 +14,13 @@ export const importCases: WgslTestSrc[] = [
           fn foo() { }
        `,
     },
+    expectedWgsl: `
+      fn main() {
+        foo();
+      }
+
+      fn foo() { }
+    `,
   },
   {
     name: `main has other root elements`,
@@ -28,6 +35,15 @@ export const importCases: WgslTestSrc[] = [
           fn main() { }
       `,
     },
+    expectedWgsl: `
+      struct Uniforms {
+        a: u32
+      }
+
+      @group(0) @binding(0) var<uniform> u: Uniforms;
+
+      fn main() { }
+    `,
   },
   {
     name: `import foo as bar`,
@@ -43,6 +59,13 @@ export const importCases: WgslTestSrc[] = [
         fn foo() { /* fooImpl */ }
       `,
     },
+    expectedWgsl: `
+      fn main() {
+        bar();
+      }
+
+      fn bar() { /* fooImpl */ }
+    `,
   },
   {
     name: `import twice doesn't get two copies`,
