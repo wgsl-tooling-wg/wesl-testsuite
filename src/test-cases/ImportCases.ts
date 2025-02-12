@@ -86,6 +86,7 @@ export const importCases: WgslTestSrc[] = [
         import package::file1::foo;
         fn bar() { foo(); }
       `,
+    },
     expectedWgsl: `
       fn main() {
         foo();
@@ -96,7 +97,6 @@ export const importCases: WgslTestSrc[] = [
 
       fn bar() { foo(); }
     `,
-    },
   },
   {
     name: `imported fn calls support fn with root conflict`,
@@ -142,6 +142,9 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() { bar(); bar(); }
+
+      fn bar() { }
     `,
   },
   {
@@ -168,6 +171,17 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() {
+        mid();
+      }
+
+      fn grand() {
+        /* main impl */
+      }
+
+      fn mid() { grand0(); }
+
+      fn grand0() { /* grandImpl */ }
     `,
   },
 
@@ -188,6 +202,14 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() {
+        foo();
+        bar();
+      }
+
+      fn foo() { }
+
+      fn bar() { }
     `,
   },
 
@@ -210,6 +232,15 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn support() {
+        bar();
+      }
+
+      fn bar() {
+        support0();
+      }
+
+      fn support0() { }
     `,
   },
 
@@ -242,9 +273,24 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn support() {
+        foo();
+      }
+
+      fn foo() {
+        support0();
+        bar();
+      }
+
+      fn support0() { }
+
+      fn bar() {
+        support1();
+      }
+
+      fn support1() { }
     `,
   },
-
   {
     name: "import support fn from two exports",
     weslSrc: {
@@ -269,6 +315,20 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() {
+        foo();
+        bar();
+      }
+
+      fn foo() {
+        support();
+      }
+
+      fn bar() {
+        support();
+      }
+
+      fn support() { }
     `,
   },
 
@@ -290,6 +350,15 @@ export const importCases: WgslTestSrc[] = [
       "./file2.wgsl": `
       `,
     },
+    expectedWgsl: `
+      fn main() {
+        let a = AStruct(1u);
+      }
+
+      struct AStruct {
+        x: u32,
+      }
+    `,
   },
 
   {
@@ -315,9 +384,19 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() {
+        let ze = elemOne();
+      }
+
+      fn elemOne() -> Elem {
+        return Elem(1u);
+      }
+
+      struct Elem {
+        sum: u32
+      }
     `,
   },
-
   {
     name: "import a transitive struct",
     weslSrc: {
@@ -342,6 +421,17 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      struct SrcStruct {
+        a: AStruct,
+      }
+
+      struct AStruct {
+        s: BStruct,
+      }
+
+      struct BStruct {
+        x: u32,
+      }
     `,
   },
 
@@ -358,6 +448,9 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn foo (a: AA) { }
+
+      struct AA { x: u32 }
     `,
   },
 
@@ -383,6 +476,21 @@ export const importCases: WgslTestSrc[] = [
         }
       `,
     },
+    expectedWgsl: `
+      struct Base {
+        b: i32
+      }
+
+      fn foo() -> AStruct {var a:AStruct; return a;}
+
+      struct AStruct {
+        x: Base0
+      }
+
+      struct Base0 {
+        x: u32
+      }
+    `,
   },
   {
     name: "copy alias to output",
@@ -392,6 +500,7 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      alias MyType = u32;
     `,
   },
   {
@@ -401,6 +510,9 @@ export const importCases: WgslTestSrc[] = [
         diagnostic(off,derivative_uniformity);
       `,
     },
+    expectedWgsl: `
+      diagnostic(off,derivative_uniformity);
+    `,
   },
   {
     name: "struct referenced by a fn param",
@@ -419,6 +531,17 @@ export const importCases: WgslTestSrc[] = [
         }
       `,
     },
+    expectedWgsl: `
+        fn main() { foo(); }
+
+        fn foo(a: AStruct) { 
+          let b = a.x;
+        }
+
+        struct AStruct {
+          x: u32
+        }
+    `,
   },
   {
     name: "const referenced by imported fn",
@@ -437,6 +560,13 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        fn main() { foo(); }
+
+        fn foo() {
+          let a = conA;
+        }
+
+        const conA = 7;
     `,
   },
   {
@@ -452,6 +582,9 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        fn main() { bar(); }
+
+        fn bar() { }
     `,
   },
   {
@@ -469,6 +602,10 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        fn main() {
+          var a: AStruct; 
+        }
+        struct AStruct { x: u32 }
     `,
   },
   {
@@ -484,6 +621,8 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        @group(0) @binding(0) var<uniform> u: Uniforms;      
+        struct Uniforms { model: mat4x4<f32> }
     `,
   },
   {
@@ -498,6 +637,10 @@ export const importCases: WgslTestSrc[] = [
         struct A { y: i32 }
       `,
     },
+    expectedWgsl: `
+        fn b() -> A { }
+        struct A { y: i32 }
+    `,
   },
   {
     name: "import a const",
@@ -512,6 +655,8 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        fn m() { let a = conA; }
+        const conA = 11;
     `,
   },
   {
@@ -527,6 +672,8 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+        fn m() { let a: aliasA = 4; }
+        alias aliasA = u32;
     `,
   },
   {
@@ -543,6 +690,10 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() { foo(); }
+      fn foo(a: f32) { }
+      alias f32 = AStruct;
+      struct AStruct { x: u32 }
     `,
   },
   {
@@ -560,6 +711,9 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
+      fn main() { foo(); }
+      fn foo() { f32(); }
+      fn f32() { }
     `,
   },
 
