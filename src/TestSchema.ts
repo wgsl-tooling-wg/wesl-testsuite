@@ -4,6 +4,7 @@ export interface WgslTestSrc {
   weslSrc: Record<string, string>;  // source wesl+ texts, keys are file paths
   notes?: string;                   // additional notes to test implementors
   expectedWgsl?: string;            // expected linked result wgsl 
+  underscoreWgsl?: string;          // expected linked result wgsl using underscore mangler
 }
 
 export interface ParsingTest {
