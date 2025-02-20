@@ -23,10 +23,10 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __bar_foo();
+        package_bar_foo();
       }
 
-      fn __bar_foo() { }
+      fn package_bar_foo() { }
     `,
   },
   {
@@ -84,10 +84,10 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __file1_foo();
+        package_file1_foo();
       }
 
-      fn __file1_foo() { /* fooImpl */ }
+      fn package_file1_foo() { /* fooImpl */ }
     `,
   },
   {
@@ -122,13 +122,13 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __file1_foo();
-        __file2_bar();
+        package_file1_foo();
+        package_file2_bar();
       }
 
-      fn __file1_foo() { /* fooImpl */ }
+      fn package_file1_foo() { /* fooImpl */ }
 
-      fn __file2_bar() { __file1_foo(); }
+      fn package_file2_bar() { package_file1_foo(); }
     `,
   },
   {
@@ -161,16 +161,16 @@ export const importCases: WgslTestSrc[] = [
       fn conflicted0(a:i32) {}
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
+      fn main() { package_file1_foo(); }
 
       fn conflicted() { }
 
-      fn __file1_foo() {
-        __file1_conflicted(0);
-        __file1_conflicted(1);
+      fn package_file1_foo() {
+        package_file1_conflicted(0);
+        package_file1_conflicted(1);
       }
 
-      fn __file1_conflicted(a:i32) {}
+      fn package_file1_conflicted(a:i32) {}
     `,
   },
   {
@@ -192,9 +192,9 @@ export const importCases: WgslTestSrc[] = [
       fn bar() { }
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); __file1_foo(); }
+      fn main() { package_file1_foo(); package_file1_foo(); }
 
-      fn __file1_foo() { }
+      fn package_file1_foo() { }
     `,
   },
   {
@@ -235,16 +235,16 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __file1_mid();
+        package_file1_mid();
       }
 
       fn grand() {
         /* main impl */
       }
 
-      fn __file1_mid() { __file2_grand(); }
+      fn package_file1_mid() { package_file2_grand(); }
 
-      fn __file2_grand() { /* grandImpl */ }
+      fn package_file2_grand() { /* grandImpl */ }
     `,
   },
 
@@ -276,13 +276,13 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __file1_foo();
-        __file1_bar();
+        package_file1_foo();
+        package_file1_bar();
       }
 
-      fn __file1_foo() { }
+      fn package_file1_foo() { }
 
-      fn __file1_bar() { }
+      fn package_file1_bar() { }
     `,
   },
 
@@ -317,14 +317,14 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn support() {
-        __file1_foo();
+        package_file1_foo();
       }
 
-      fn __file1_foo() {
-        __file1_support();
+      fn package_file1_foo() {
+        package_file1_support();
       }
 
-      fn __file1_support() { }
+      fn package_file1_support() { }
     `,
   },
   {
@@ -375,21 +375,21 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn support() {
-        __file1_foo();
+        package_file1_foo();
       }
 
-      fn __file1_foo() {
-        __file1_support();
-        __file2_bar();
+      fn package_file1_foo() {
+        package_file1_support();
+        package_file2_bar();
       }
 
-      fn __file1_support() { }
+      fn package_file1_support() { }
 
-      fn __file2_bar() {
-        __file2_support();
+      fn package_file2_bar() {
+        package_file2_support();
       }
 
-      fn __file2_support() { }
+      fn package_file2_support() { }
     `,
   },
   {
@@ -433,19 +433,19 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        __file1_foo();
-        __file1_bar();
+        package_file1_foo();
+        package_file1_bar();
       }
 
-      fn __file1_foo() {
-        __file1_support();
+      fn package_file1_foo() {
+        package_file1_support();
       }
 
-      fn __file1_bar() {
-        __file1_support();
+      fn package_file1_bar() {
+        package_file1_support();
       }
 
-      fn __file1_support() { }
+      fn package_file1_support() { }
     `,
   },
 
@@ -478,13 +478,13 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        let a = __file1_AStruct(1u);
+        let a = package_file1_AStruct(1u);
       }
 
-      struct __file1_AStruct {
+      struct package_file1_AStruct {
         x: u32,
       }
-      `
+      `,
   },
   {
     name: "import fn with support struct constructor",
@@ -523,15 +523,15 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() {
-        let ze = __file1_elemOne();
+        let ze = package_file1_elemOne();
       }
-      fn __file1_elemOne() -> __file1_Elem {
-        return __file1_Elem(1u);
+      fn package_file1_elemOne() -> package_file1_Elem {
+        return package_file1_Elem(1u);
       }
-      struct __file1_Elem {
+      struct package_file1_Elem {
         sum: u32
       }
-    `
+    `,
   },
   {
     name: "import a transitive struct",
@@ -571,15 +571,15 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       struct SrcStruct {
-        a: __file1_AStruct,
+        a: package_file1_AStruct,
       }
-      struct __file1_AStruct {
-        s: __file2_BStruct,
+      struct package_file1_AStruct {
+        s: package_file2_BStruct,
       }
-      struct __file2_BStruct {
+      struct package_file2_BStruct {
         x: u32,
       }
-    `
+    `,
   },
 
   {
@@ -600,9 +600,9 @@ export const importCases: WgslTestSrc[] = [
       struct AA { x: u32 }
     `,
     underscoreWgsl: `
-      fn foo (a: __file1_AStruct) { }
-      struct __file1_AStruct { x: u32 }
-    `
+      fn foo (a: package_file1_AStruct) { }
+      struct package_file1_AStruct { x: u32 }
+    `,
   },
   {
     name: "import a struct with name conflicting support struct",
@@ -645,14 +645,14 @@ export const importCases: WgslTestSrc[] = [
       struct Base {
         b: i32
       }
-      fn foo() -> __file1_AStruct {var a:__file1_AStruct; return a;}
-      struct __file1_AStruct {
-        x: __file1_Base
+      fn foo() -> package_file1_AStruct {var a:package_file1_AStruct; return a;}
+      struct package_file1_AStruct {
+        x: package_file1_Base
       }
-      struct __file1_Base {
+      struct package_file1_Base {
         x: u32
       }
-    `
+    `,
   },
   {
     name: "copy alias to output",
@@ -705,14 +705,14 @@ export const importCases: WgslTestSrc[] = [
         }
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
-      fn __file1_foo(a: __file1_AStruct) {
+      fn main() { package_file1_foo(); }
+      fn package_file1_foo(a: package_file1_AStruct) {
         let b = a.x;
       }
-      struct __file1_AStruct {
+      struct package_file1_AStruct {
         x: u32
       }
-    `
+    `,
   },
   {
     name: "const referenced by imported fn",
@@ -740,12 +740,12 @@ export const importCases: WgslTestSrc[] = [
         const conA = 7;
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
-      fn __file1_foo() {
-        let a = __file1_conA;
+      fn main() { package_file1_foo(); }
+      fn package_file1_foo() {
+        let a = package_file1_conA;
       }
-      const __file1_conA = 7;
-    `
+      const package_file1_conA = 7;
+    `,
   },
   {
     name: "fn call with a separator",
@@ -765,9 +765,9 @@ export const importCases: WgslTestSrc[] = [
       fn bar() { }
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo_bar(); }
-      fn __file1_foo_bar() { }
-    `
+      fn main() { package_file1_foo_bar(); }
+      fn package_file1_foo_bar() { }
+    `,
   },
   {
     name: "local var to struct",
@@ -791,10 +791,10 @@ export const importCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
         fn main() {
-          var a: __file1_AStruct;
+          var a: package_file1_AStruct;
         }
-        struct __file1_AStruct { x: u32 }
-    `
+        struct package_file1_AStruct { x: u32 }
+    `,
   },
   {
     name: "global var to struct",
@@ -813,9 +813,9 @@ export const importCases: WgslTestSrc[] = [
         struct Uniforms { model: mat4x4<f32> }
     `,
     underscoreWgsl: `
-        @group(0) @binding(0) var<uniform> u: __file1_Uniforms;
-        struct __file1_Uniforms { model: mat4x4<f32> }
-    `
+        @group(0) @binding(0) var<uniform> u: package_file1_Uniforms;
+        struct package_file1_Uniforms { model: mat4x4<f32> }
+    `,
   },
   {
     name: "return type of function",
@@ -834,9 +834,9 @@ export const importCases: WgslTestSrc[] = [
         struct A { y: i32 }
     `,
     underscoreWgsl: `
-        fn b() -> __file1_A { }
-        struct __file1_A { y: i32 }
-    `
+        fn b() -> package_file1_A { }
+        struct package_file1_A { y: i32 }
+    `,
   },
   {
     name: "import a const",
@@ -855,9 +855,9 @@ export const importCases: WgslTestSrc[] = [
         const conA = 11;
     `,
     underscoreWgsl: `
-        fn m() { let a = __file1_conA; }
-        const __file1_conA = 11;
-    `
+        fn m() { let a = package_file1_conA; }
+        const package_file1_conA = 11;
+    `,
   },
   {
     name: "import an alias",
@@ -876,9 +876,9 @@ export const importCases: WgslTestSrc[] = [
         alias aliasA = u32;
     `,
     underscoreWgsl: `
-        fn m() { let a: __file1_aliasA = 4; }
-        alias __file1_aliasA = u32;
-    `
+        fn m() { let a: package_file1_aliasA = 4; }
+        alias package_file1_aliasA = u32;
+    `,
   },
   {
     name: "alias f32",
@@ -900,11 +900,11 @@ export const importCases: WgslTestSrc[] = [
       struct AStruct { x: u32 }
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
-      fn __file1_foo(a: __file1_f32) { }
-      alias __file1_f32 = __file1_AStruct;
-      struct __file1_AStruct { x: u32 }
-    `
+      fn main() { package_file1_foo(); }
+      fn package_file1_foo(a: package_file1_f32) { }
+      alias package_file1_f32 = package_file1_AStruct;
+      struct package_file1_AStruct { x: u32 }
+    `,
   },
   {
     name: "fn f32()",
@@ -926,10 +926,10 @@ export const importCases: WgslTestSrc[] = [
       fn f32() { }
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
-      fn __file1_foo() { __file1_f32(); }
-      fn __file1_f32() { }
-    `
+      fn main() { package_file1_foo(); }
+      fn package_file1_foo() { package_file1_f32(); }
+      fn package_file1_f32() { }
+    `,
   },
   {
     name: "circular import",
@@ -955,11 +955,11 @@ export const importCases: WgslTestSrc[] = [
       fn fie() {}
     `,
     underscoreWgsl: `
-      fn main() { __file1_foo(); }
-      fn __file1_foo() { __file2_bar(); }
-      fn __file2_bar() { __file1_fie(); }
-      fn __file1_fie() {}
-    `
+      fn main() { package_file1_foo(); }
+      fn package_file1_foo() { package_file2_bar(); }
+      fn package_file2_bar() { package_file1_fie(); }
+      fn package_file1_fie() {}
+    `,
   },
 
   // {
