@@ -669,11 +669,11 @@ export const importCases: WgslTestSrc[] = [
     name: "copy diagnostics to output",
     weslSrc: {
       "./main.wgsl": `
-        diagnostic(off,derivative_uniformity);
+        diagnostic(off, derivative_uniformity);
       `,
     },
     expectedWgsl: `
-      diagnostic(off,derivative_uniformity);
+      diagnostic(off, derivative_uniformity);
     `,
   },
   {
