@@ -12,7 +12,7 @@ export interface WgslTestSrc {
   expectedWgsl?: string;
   /**
    * Expected linked result wgsl.
-   * Uses the minimal mangling strategy, see [NameMangling.md](https://github.com/wgsl-tooling-wg/wesl-spec/blob/main/NameMangling.md)
+   * Uses the underscore-count mangling strategy, see [NameMangling.md](https://github.com/wgsl-tooling-wg/wesl-spec/blob/main/NameMangling.md)
    */
   underscoreWgsl?: string;
 }
