@@ -460,11 +460,9 @@ export const importCases: WgslTestSrc[] = [
           }
       `,
       "./file1.wgsl": `
-        struct AStruct {
-          x: u32,
-        }
-      `,
-      "./file2.wgsl": `
+          struct AStruct {
+            x: u32,
+          }
       `,
     },
     expectedWgsl: `
@@ -504,8 +502,6 @@ export const importCases: WgslTestSrc[] = [
         fn elemOne() -> Elem {
           return Elem(1u);
         }
-      `,
-      "./file2.wgsl": `
       `,
     },
     expectedWgsl: `
