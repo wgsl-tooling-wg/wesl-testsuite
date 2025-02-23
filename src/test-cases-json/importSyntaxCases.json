@@ -24,6 +24,18 @@
     "fails": true
   },
   {
+    "src": "import {};",
+    "fails": true
+  },
+  {
+    "src": "import {foo, {bar}};",
+    "fails": true
+  },
+  {
+    "src": "import { foo } as bar;",
+    "fails": true
+  },
+  {
     "src": "import foo::{};",
     "fails": true
   },
@@ -59,6 +71,15 @@
   },
   {
     "src": "import foo::bar;"
+  },
+  {
+    "src": "import { foo};"
+  },
+  {
+    "src": "import {a::b as c, d};"
+  },
+  {
+    "src": "import {a::b as c, d::{ e }, f};"
   },
   {
     "src": "import foo::{a,b};"
