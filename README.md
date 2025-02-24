@@ -13,10 +13,12 @@ The format is described in:
 JSON version:
 [importCases.json](./src/test-cases-json/importCases.json)
 [importSyntaxCases.json](./src/test-cases-json/importSyntaxCases.json)
+[conditionalTranslation.json](./src/test-cases-json/conditionalTranslation.json)
 
 TypeScript version:
 [ImportCases.ts](./src/test-cases/ImportCases.ts)
 [ImportSyntaxCases.ts](./src/test-cases/ImportSyntaxCases.ts)
+[ConditionalTranslation.ts](./src/test-cases/ConditionalTranslation.ts)
 
 ## Adding New Tests
 
