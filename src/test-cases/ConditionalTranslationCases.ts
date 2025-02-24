@@ -366,6 +366,52 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       const c1 = 10;
       const c3 = 10;`,
   },
+  // though cases
+  {
+    name: 'contitional declaration shadowing',
+    notes: 'this test must be ran with stripping disabled.'
+    weslSrc: {
+      './main.wgsl': `fn main() { package::util::func(); }`,
+      './util.wgsl': `
+        const foo = 10;
+        const bar = 10;
+        fn func() {
+          @if(true) let foo = 20;
+          let x = foo; // foo is shadowed.
+          @if(false) let bar = 20;
+          let y = bar; // bar is not shadowed.
+        }`,
+    },
+    underscoreWgsl: `
+      fn main() { package_util_func(); }
+      
+      const package_util_foo = 10;
+      const package_util_bar = 10;
+      fn package_util_func() {
+        let foo = 20;
+        let x = foo;
+        let y = package_util_bar;
+      }`,
+  },
+  {
+    name: 'contitional import of const_assert',
+    notes: 'const_asserts in imported modules are included if at least one of their declaration is used.',
+    weslSrc: {
+      './main.wgsl': `
+        fn main() {
+          @if(true) package::foo::func();
+          @if(false) package::bar::func();
+        }`,
+      './foo.wgsl': `const_assert 0 < 1;`
+      './bar.wgsl': `const_assert 1 < 2;`,
+    },
+    underscoreWgsl: `
+      fn main() {
+        package_foo_func();
+      }
+      
+      const_assert 0 < 1;`,
+  },
 ];
 
 export default conditionalTranslationCases;
