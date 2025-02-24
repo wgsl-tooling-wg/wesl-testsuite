@@ -316,6 +316,56 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         const_assert 0 < 1;
       }`,
   },
+  // test the attributes expressions
+  {
+    name: '@if short-circuiting OR',
+    weslSrc: {
+      './main.wgsl': `
+        @if(true || true) const c1 = 10;
+        @if(true || false) const c2 = 10;
+        @if(false || true) const c3 = 10;
+        @if(false || false) const c4 = 10;`,
+    },
+    expectedWgsl: `
+      const c1 = 10;
+      const c2 = 10;
+      const c3 = 10;`,
+  },
+  {
+    name: '@if short-circuiting AND',
+    weslSrc: {
+      './main.wgsl': `
+        @if(true && true) const c1 = 10;
+        @if(true && false) const c2 = 10;
+        @if(false && true) const c3 = 10;
+        @if(false && false) const c4 = 10;`,
+    },
+    expectedWgsl: `
+      const c1 = 10;`,
+  },
+  {
+    name: '@if logical NOT',
+    weslSrc: {
+      './main.wgsl': `
+        @if(!true) const c1 = 10;
+        @if(!false) const c2 = 10;`,
+    },
+    expectedWgsl: `
+      const c2 = 10;`,
+  },
+  {
+    name: '@if parentheses',
+    weslSrc: {
+      './main.wgsl': `
+        @if((true)) const c1 = 10;
+        @if((false)) const c2 = 10;
+        @if(!(false && true) && (true || false)) const c3 = 10;
+        `,
+    },
+    expectedWgsl: `
+      const c1 = 10;
+      const c3 = 10;`,
+  },
 ];
 
 export default conditionalTranslationCases;
