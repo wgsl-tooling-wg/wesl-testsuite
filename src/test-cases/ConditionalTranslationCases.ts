@@ -369,7 +369,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   // though cases
   {
     name: 'contitional declaration shadowing',
-    notes: 'this test must be ran with stripping disabled.'
+    notes: 'this test must be ran with stripping disabled.',
     weslSrc: {
       './main.wgsl': `fn main() { package::util::func(); }`,
       './util.wgsl': `
@@ -377,9 +377,9 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         const bar = 10;
         fn func() {
           @if(true) let foo = 20;
-          let x = foo; // foo is shadowed.
+          let x = foo; /* foo is shadowed. */
           @if(false) let bar = 20;
-          let y = bar; // bar is not shadowed.
+          let y = bar; /* bar is not shadowed. */
         }`,
     },
     underscoreWgsl: `
@@ -402,15 +402,20 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
           @if(true) package::foo::func();
           @if(false) package::bar::func();
         }`,
-      './foo.wgsl': `const_assert 0 < 1;`
-      './bar.wgsl': `const_assert 1 < 2;`,
+      './foo.wgsl': `
+        const_assert 0 < 1;
+        fn func() {}`,
+      './bar.wgsl': `
+        const_assert 1 < 2;
+        fn func() {}`,
     },
     underscoreWgsl: `
       fn main() {
         package_foo_func();
       }
-      
-      const_assert 0 < 1;`,
+
+      const_assert 0 < 1;
+      fn package_foo_func() {}`,
   },
 ];
 
