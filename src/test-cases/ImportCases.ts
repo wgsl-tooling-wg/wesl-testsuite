@@ -1007,6 +1007,33 @@ export const importCases: WgslTestSrc[] = [
         fn package_file1_bar() { }
     `
   },
+  {
+    name: "import super::file1",
+    weslSrc: {
+      "./main.wgsl": `
+        import super::file1;
+
+        fn main() {
+          file1::bar();
+        }
+      `,
+      "./file1.wgsl": `
+        fn bar() { }
+      `,
+    },
+    expectedWgsl: `
+        fn main() {
+          bar();
+        }
+        fn bar() { }
+    `,
+    underscoreWgsl: `
+        fn main() {
+          package_file1_bar();
+        }
+        fn package_file1_bar() { }
+    `
+  },
 
   // {
   //   name: "",
