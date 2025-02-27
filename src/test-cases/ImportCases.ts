@@ -982,6 +982,31 @@ export const importCases: WgslTestSrc[] = [
         fn package_file1_bar() { }
     `
   },
+  {
+    name: "inline super:: reference",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          super::file1::bar();
+        }
+      `,
+      "./file1.wgsl": `
+        fn bar() { }
+      `,
+    },
+    expectedWgsl: `
+        fn main() {
+          bar();
+        }
+        fn bar() { }
+    `,
+    underscoreWgsl: `
+        fn main() {
+          package_file1_bar();
+        }
+        fn package_file1_bar() { }
+    `
+  },
 
   // {
   //   name: "",
