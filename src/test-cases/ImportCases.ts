@@ -1034,6 +1034,42 @@ export const importCases: WgslTestSrc[] = [
         fn package_file1_bar() { }
     `
   },
+  {
+    name: "declaration after subscope",
+    weslSrc: {
+      "./main.wgsl": `
+        import package::file1::foo;
+
+        fn main() {
+          {
+            foo();
+          }
+          var foo = 1;
+        }
+      `,
+      "./file1.wgsl": `
+        fn foo() { }
+      `,
+    },
+    expectedWgsl: `
+      fn main() {
+        {
+          foo();
+        }
+        var foo = 1;
+      }
+      fn foo() { }
+    `,
+    underscoreWgsl: `
+      fn main() {
+        {
+          package_file1_foo();
+        }
+        var foo = 1;
+      }
+      fn package_file1_foo() { }
+    `
+  },
 
   // {
   //   name: "",
