@@ -10,7 +10,9 @@
     "cases": "run-s build:json-script build:cases",
     "cases:watch": "nodemon --ext ts --watch src/test-cases --watch src/tools --watch src/TestSchema.ts --exec \"pnpm cases\""
   },
-  "files" : ["src"],
+  "files": [
+    "src"
+  ],
   "exports": {
     ".": "./src/index.js"
   },
