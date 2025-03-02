@@ -100,9 +100,9 @@
     "src": "import a::b::{c as foo};"
   },
   {
-    "src": "import super::foo::bar; fn main() {}"
+    "src": "import super::foo::bar;\n          fn main() {}"
   },
   {
-    "src": "import bevy_pbr::{ mesh_view_bindings, utils::{PI, noise}, lighting };"
+    "src": "\n    import bevy_pbr::{\n             mesh_view_bindings,\n             utils::{PI, noise},\n             lighting\n           };"
   }
 ]
