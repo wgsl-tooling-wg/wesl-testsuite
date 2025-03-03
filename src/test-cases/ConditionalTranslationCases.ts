@@ -371,8 +371,43 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   },
   // though cases
   {
-    name: "contitional declaration shadowing",
-    notes: "this test must be ran with stripping disabled.",
+    name: "declaration shadowing",
+    weslSrc: {
+      "./main.wgsl": `fn main() { package::util::func(); }`,
+      "./util.wgsl": `
+        const foo = 10;
+        const bar = 10;
+        fn func() {
+          @if(true) let foo = 20;
+          let x = foo; /* foo is shadowed. */
+          @if(false) let bar = 20;
+          let y = bar; /* bar is not shadowed. */
+        }`,
+    },
+    expectedWgsl: `
+      fn main() { func(); }
+      
+      fn func() {
+        let foo = 20;
+        let x = foo; /* foo is shadowed. */
+        let y = bar; /* bar is not shadowed. */
+      }
+      const bar = 10;
+    `,
+    underscoreWgsl: `
+      fn main() { package_util_func(); }
+      
+      fn package_util_func() {
+        let foo = 20;
+        let x = foo; /* foo is shadowed. */
+        let y = package_util_bar; /* bar is not shadowed. */
+      }
+      const package_util_bar = 10;
+    `,
+  },
+  {
+    name: "conditional declaration shadowing",
+    notes: "this test must be ran with stripping disabled.", // unsupported on wesl-js (no disable stripping option)
     weslSrc: {
       "./main.wgsl": `fn main() { package::util::func(); }`,
       "./util.wgsl": `
