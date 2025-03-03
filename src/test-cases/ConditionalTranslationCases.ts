@@ -99,7 +99,10 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         @if(true) struct foo { x: u32 }
         @if(false) struct bar { x: u32 }`,
     },
-    expectedWgsl: 'struct foo { x: u32 }',
+    expectedWgsl: `
+      struct foo { 
+        x: u32 
+      }`,
   },
   {
     name: '@if on structure member',
@@ -112,7 +115,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
       struct s {
-        foo: u32,
+        foo: u32
       }`,
   },
   {
