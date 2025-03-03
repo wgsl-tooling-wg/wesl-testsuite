@@ -4,96 +4,96 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   // first we check that if attributes work on all valid locations.
   // https://github.com/wgsl-tooling-wg/wesl-spec/blob/main/ConditionalTranslation.md#location-of-translate-time-attributes
   {
-    name: '@if on diagnostic directive',
+    name: "@if on diagnostic directive",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) diagnostic(error, foo);
         @if(false) diagnostic(error, bar);`,
     },
-    expectedWgsl: 'diagnostic(error, foo);',
+    expectedWgsl: "diagnostic(error, foo);",
   },
   {
-    name: '@if on enable directive',
+    name: "@if on enable directive",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) enable foo;
         @if(false) enable bar;`,
     },
-    expectedWgsl: 'enable foo;',
+    expectedWgsl: "enable foo;",
   },
   {
-    name: '@if on requires directive',
+    name: "@if on requires directive",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) requires foo;
         @if(false) requires bar;`,
     },
-    expectedWgsl: 'requires foo;',
+    expectedWgsl: "requires foo;",
   },
   {
-    name: '@if on global const declaration',
+    name: "@if on global const declaration",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) const foo = 10;
         @if(false) const bar = 10;`,
     },
-    expectedWgsl: 'const foo = 10;',
+    expectedWgsl: "const foo = 10;",
   },
   {
-    name: '@if on global override declaration',
+    name: "@if on global override declaration",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) override foo = 10;
         @if(false) override bar = 10;`,
     },
-    expectedWgsl: 'override foo = 10;',
+    expectedWgsl: "override foo = 10;",
   },
   {
-    name: '@if on global variable declaration',
+    name: "@if on global variable declaration",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) var<private> foo = 10;
         @if(false) var<private> bar = 10;`,
     },
-    expectedWgsl: 'var<private> foo = 10;',
+    expectedWgsl: "var<private> foo = 10;",
   },
   {
-    name: '@if on type alias',
+    name: "@if on type alias",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) alias foo = f32;
         @if(false) alias bar = f32;`,
     },
-    expectedWgsl: 'alias foo = f32;',
+    expectedWgsl: "alias foo = f32;",
   },
   {
-    name: '@if on module scope const_assert',
+    name: "@if on module scope const_assert",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true) const_assert 0 < 1;
         @if(false) const_assert 1 < 2;`,
     },
-    expectedWgsl: 'const_assert 0 < 1;',
+    expectedWgsl: "const_assert 0 < 1;",
   },
   {
-    name: '@if on function declaration',
+    name: "@if on function declaration",
     weslSrc: {
       "./main.wgsl": `
         @if(true) fn foo() {}
         @if(false) fn bar() {}`,
     },
-    expectedWgsl: 'fn foo() {}',
+    expectedWgsl: "fn foo() {}",
   },
   {
-    name: '@if on function formal parameter',
+    name: "@if on function formal parameter",
     weslSrc: {
       "./main.wgsl": `
         fn func(@if(true) foo: u32, @if(false) bar: u32) {}`,
     },
-    expectedWgsl: 'fn func(foo: u32) {}',
+    expectedWgsl: "fn func(foo: u32) {}",
   },
   {
-    name: '@if on structure declaration',
+    name: "@if on structure declaration",
     weslSrc: {
       "./main.wgsl": `
         @if(true) struct foo { x: u32 }
@@ -105,7 +105,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on structure member',
+    name: "@if on structure member",
     weslSrc: {
       "./main.wgsl": `
         struct s {
@@ -119,7 +119,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on compound statement',
+    name: "@if on compound statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -133,7 +133,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on if statement',
+    name: "@if on if statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -147,7 +147,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on switch statement',
+    name: "@if on switch statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -161,7 +161,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on switch clause',
+    name: "@if on switch clause",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -179,7 +179,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on loop statement',
+    name: "@if on loop statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -193,7 +193,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on for statement',
+    name: "@if on for statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -207,7 +207,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on while statement',
+    name: "@if on while statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -221,7 +221,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on break statement',
+    name: "@if on break statement",
     weslSrc: {
       "./main.wgsl": `
         fn foo() { while true { @if(true) break; }; }
@@ -232,7 +232,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn bar() { while true { }; }`,
   },
   {
-    name: '@if on break-if statement',
+    name: "@if on break-if statement",
     weslSrc: {
       "./main.wgsl": `
         fn foo() { loop { continuing { @if(true) break if 0 < 1; } } }
@@ -243,7 +243,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn bar() { loop { continuing { } }; }`,
   },
   {
-    name: '@if on continue statement',
+    name: "@if on continue statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -256,7 +256,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on continuing statement',
+    name: "@if on continuing statement",
     weslSrc: {
       "./main.wgsl": `
         fn foo() { loop { @if(true) continuing { } } }
@@ -267,7 +267,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn bar() { loop { } }`,
   },
   {
-    name: '@if on return statement',
+    name: "@if on return statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -281,7 +281,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on discard statement',
+    name: "@if on discard statement",
     weslSrc: {
       "./main.wgsl": `
         fn foo() { @if(true) discard; }
@@ -292,7 +292,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn bar() { }`,
   },
   {
-    name: '@if on call statement',
+    name: "@if on call statement",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -306,7 +306,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: '@if on function-scope const_assert',
+    name: "@if on function-scope const_assert",
     weslSrc: {
       "./main.wgsl": `
         fn func() {
@@ -321,9 +321,9 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   },
   // test the attributes expressions
   {
-    name: '@if short-circuiting OR',
+    name: "@if short-circuiting OR",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true || true) const c1 = 10;
         @if(true || false) const c2 = 10;
         @if(false || true) const c3 = 10;
@@ -335,9 +335,9 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       const c3 = 10;`,
   },
   {
-    name: '@if short-circuiting AND',
+    name: "@if short-circuiting AND",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(true && true) const c1 = 10;
         @if(true && false) const c2 = 10;
         @if(false && true) const c3 = 10;
@@ -347,9 +347,9 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       const c1 = 10;`,
   },
   {
-    name: '@if logical NOT',
+    name: "@if logical NOT",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if(!true) const c1 = 10;
         @if(!false) const c2 = 10;`,
     },
@@ -357,9 +357,9 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       const c2 = 10;`,
   },
   {
-    name: '@if parentheses',
+    name: "@if parentheses",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         @if((true)) const c1 = 10;
         @if((false)) const c2 = 10;
         @if(!(false && true) && (true || false)) const c3 = 10;
@@ -371,11 +371,11 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   },
   // though cases
   {
-    name: 'contitional declaration shadowing',
-    notes: 'this test must be ran with stripping disabled.',
+    name: "contitional declaration shadowing",
+    notes: "this test must be ran with stripping disabled.",
     weslSrc: {
-      './main.wgsl': `fn main() { package::util::func(); }`,
-      './util.wgsl': `
+      "./main.wgsl": `fn main() { package::util::func(); }`,
+      "./util.wgsl": `
         const foo = 10;
         const bar = 10;
         fn func() {
@@ -397,18 +397,19 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: 'contitional import of const_assert',
-    notes: 'const_asserts in imported modules are included if at least one of their declaration is used.',
+    name: "contitional import of const_assert",
+    notes:
+      "const_asserts in imported modules are included if at least one of their declaration is used.",
     weslSrc: {
-      './main.wgsl': `
+      "./main.wgsl": `
         fn main() {
           @if(true) package::foo::func();
           @if(false) package::bar::func();
         }`,
-      './foo.wgsl': `
+      "./foo.wgsl": `
         const_assert 0 < 1;
         fn func() {}`,
-      './bar.wgsl': `
+      "./bar.wgsl": `
         const_assert 1 < 2;
         fn func() {}`,
     },
