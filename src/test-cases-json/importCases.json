@@ -13,8 +13,8 @@
     "weslSrc": {
       "./main.wgsl": "\n          struct Uniforms {\n            a: u32\n          }\n\n          @group(0) @binding(0) var<uniform> u: Uniforms;\n\n          fn main() { }\n      "
     },
-    "expectedWgsl": "\n      struct Uniforms {\n        a: u32\n      }\n\n      @group(0) @binding(0) var<uniform> u: Uniforms;\n\n      fn main() { }\n    ",
-    "underscoreWgsl": "\n      struct Uniforms {\n        a: u32\n      }\n\n      @group(0) @binding(0) var<uniform> u: Uniforms;\n\n      fn main() { }\n    "
+    "expectedWgsl": "\n      struct Uniforms { a: u32 }\n\n      @group(0) @binding(0) var<uniform> u: Uniforms;\n\n      fn main() { }\n    ",
+    "underscoreWgsl": "\n      struct Uniforms { a: u32 }\n\n      @group(0) @binding(0) var<uniform> u: Uniforms;\n\n      fn main() { }\n    "
   },
   {
     "name": "import foo as bar",
@@ -104,10 +104,10 @@
     "name": "import a struct",
     "weslSrc": {
       "./main.wgsl": "\n          import package::file1::AStruct;\n\n          fn main() {\n            let a = AStruct(1u); \n          }\n      ",
-      "./file1.wgsl": "\n          struct AStruct {\n            x: u32,\n          }\n      "
+      "./file1.wgsl": "\n          struct AStruct {\n            x: u32\n          }\n      "
     },
-    "expectedWgsl": "\n      fn main() {\n        let a = AStruct(1u);\n      }\n\n      struct AStruct {\n        x: u32,\n      }\n    ",
-    "underscoreWgsl": "\n      fn main() {\n        let a = package_file1_AStruct(1u);\n      }\n\n      struct package_file1_AStruct {\n        x: u32,\n      }\n      "
+    "expectedWgsl": "\n      fn main() {\n        let a = AStruct(1u);\n      }\n\n      struct AStruct { x: u32 }\n    ",
+    "underscoreWgsl": "\n      fn main() {\n        let a = package_file1_AStruct(1u);\n      }\n\n      struct package_file1_AStruct { x: u32 }\n      "
   },
   {
     "name": "import fn with support struct constructor",
@@ -115,18 +115,18 @@
       "./main.wgsl": "\n        import package::file1::elemOne;\n\n        fn main() {\n          let ze = elemOne();\n        }\n      ",
       "./file1.wgsl": "\n        struct Elem {\n          sum: u32\n        }\n\n        fn elemOne() -> Elem {\n          return Elem(1u);\n        }\n      "
     },
-    "expectedWgsl": "\n      fn main() {\n        let ze = elemOne();\n      }\n\n      fn elemOne() -> Elem {\n        return Elem(1u);\n      }\n\n      struct Elem {\n        sum: u32\n      }\n    ",
-    "underscoreWgsl": "\n      fn main() {\n        let ze = package_file1_elemOne();\n      }\n      fn package_file1_elemOne() -> package_file1_Elem {\n        return package_file1_Elem(1u);\n      }\n      struct package_file1_Elem {\n        sum: u32\n      }\n    "
+    "expectedWgsl": "\n      fn main() {\n        let ze = elemOne();\n      }\n\n      fn elemOne() -> Elem {\n        return Elem(1u);\n      }\n\n      struct Elem { sum: u32 }\n    ",
+    "underscoreWgsl": "\n      fn main() {\n        let ze = package_file1_elemOne();\n      }\n      fn package_file1_elemOne() -> package_file1_Elem {\n        return package_file1_Elem(1u);\n      }\n      struct package_file1_Elem { sum: u32 }\n    "
   },
   {
     "name": "import a transitive struct",
     "weslSrc": {
       "./main.wgsl": "\n        import package::file1::AStruct;\n\n        struct SrcStruct {\n          a: AStruct,\n        }\n      ",
-      "./file1.wgsl": "\n        import package::file2::BStruct;\n\n        struct AStruct {\n          s: BStruct,\n        }\n      ",
-      "./file2.wgsl": "\n        struct BStruct {\n          x: u32,\n        }\n      "
+      "./file1.wgsl": "\n        import package::file2::BStruct;\n\n        struct AStruct {\n          s: BStruct\n        }\n      ",
+      "./file2.wgsl": "\n        struct BStruct {\n          x: u32\n        }\n      "
     },
-    "expectedWgsl": "\n      struct SrcStruct {\n        a: AStruct,\n      }\n\n      struct AStruct {\n        s: BStruct,\n      }\n\n      struct BStruct {\n        x: u32,\n      }\n    ",
-    "underscoreWgsl": "\n      struct SrcStruct {\n        a: package_file1_AStruct,\n      }\n      struct package_file1_AStruct {\n        s: package_file2_BStruct,\n      }\n      struct package_file2_BStruct {\n        x: u32,\n      }\n    "
+    "expectedWgsl": "\n      struct SrcStruct { a: AStruct }\n\n      struct AStruct { s: BStruct }\n\n      struct BStruct { x: u32 }\n    ",
+    "underscoreWgsl": "\n      struct SrcStruct { a: package_file1_AStruct }\n      struct package_file1_AStruct { s: package_file2_BStruct }\n      struct package_file2_BStruct { x: u32 }\n    "
   },
   {
     "name": "'import as' a struct",
@@ -143,8 +143,8 @@
       "./main.wgsl": "\n        import package::file1::AStruct;\n\n        struct Base {\n          b: i32\n        }\n\n        fn foo() -> AStruct {var a:AStruct; return a;}\n      ",
       "./file1.wgsl": "\n        struct Base {\n          x: u32\n        }\n\n        struct AStruct {\n          x: Base\n        }\n      "
     },
-    "expectedWgsl": "\n      struct Base {\n        b: i32\n      }\n\n      fn foo() -> AStruct {var a:AStruct; return a;}\n\n      struct AStruct {\n        x: Base0\n      }\n\n      struct Base0 {\n        x: u32\n      }\n    ",
-    "underscoreWgsl": "\n      struct Base {\n        b: i32\n      }\n      fn foo() -> package_file1_AStruct {var a:package_file1_AStruct; return a;}\n      struct package_file1_AStruct {\n        x: package_file1_Base\n      }\n      struct package_file1_Base {\n        x: u32\n      }\n    "
+    "expectedWgsl": "\n      struct Base { b: i32 }\n\n      fn foo() -> AStruct {var a:AStruct; return a;}\n\n      struct AStruct { x: Base0 }\n\n      struct Base0 { x: u32 }\n    ",
+    "underscoreWgsl": "\n      struct Base { b: i32 }\n      fn foo() -> package_file1_AStruct {var a:package_file1_AStruct; return a;}\n      struct package_file1_AStruct { x: package_file1_Base }\n      struct package_file1_Base { x: u32 }\n    "
   },
   {
     "name": "copy alias to output",
@@ -166,8 +166,8 @@
       "./main.wgsl": "\n        import package::file1::foo;\n\n        fn main() { foo(); }\n      ",
       "./file1.wgsl": "\n        struct AStruct {\n          x: u32\n        }\n        fn foo(a: AStruct) {\n          let b = a.x;\n        }\n      "
     },
-    "expectedWgsl": "\n        fn main() { foo(); }\n\n        fn foo(a: AStruct) { \n          let b = a.x;\n        }\n\n        struct AStruct {\n          x: u32\n        }\n    ",
-    "underscoreWgsl": "\n      fn main() { package_file1_foo(); }\n      fn package_file1_foo(a: package_file1_AStruct) {\n        let b = a.x;\n      }\n      struct package_file1_AStruct {\n        x: u32\n      }\n    "
+    "expectedWgsl": "\n        fn main() { foo(); }\n\n        fn foo(a: AStruct) { \n          let b = a.x;\n        }\n\n        struct AStruct { x: u32 }\n    ",
+    "underscoreWgsl": "\n      fn main() { package_file1_foo(); }\n      fn package_file1_foo(a: package_file1_AStruct) {\n        let b = a.x;\n      }\n      struct package_file1_AStruct { x: u32 }\n    "
   },
   {
     "name": "const referenced by imported fn",
