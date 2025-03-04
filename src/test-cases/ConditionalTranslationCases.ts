@@ -444,6 +444,12 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         const_assert 1 < 2;
         fn func() {}`,
     },
+    expectedWgsl: `
+      const_assert 0 < 1;
+      fn main() {
+        func();
+      }
+      fn func() {}`,
     underscoreWgsl: `
       fn main() {
         package_foo_func();
