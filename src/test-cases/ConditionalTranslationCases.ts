@@ -224,8 +224,8 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         fn bar() { while true { @if(false) break; }; }`,
     },
     expectedWgsl: `
-      fn foo() { while true { break; }; }
-      fn bar() { while true { }; }`,
+      fn foo() { while true {  break; }; }
+      fn bar() { while true {  }; }`,
   },
   {
     name: "@if on break-if statement",
@@ -248,7 +248,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
       fn func() {
-        while true { continue; }
+        while true {  continue; }
       }`,
   },
   {
@@ -284,8 +284,8 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         fn bar() { @if(false) discard; }`,
     },
     expectedWgsl: `
-      fn foo() { discard; }
-      fn bar() { }`,
+      fn foo() {  discard; }
+      fn bar() {  }`,
   },
   {
     name: "@if on call statement",
