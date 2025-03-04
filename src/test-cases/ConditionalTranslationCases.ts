@@ -235,8 +235,8 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         fn bar() { loop { continuing { @if(false) break if 1 < 2; } } }`,
     },
     expectedWgsl: `
-      fn foo() { loop { continuing { break if 0 < 1; } }; }
-      fn bar() { loop { continuing { } }; }`,
+      fn foo() { loop { continuing {  break if 0 < 1; } } }
+      fn bar() { loop { continuing {  } } }`,
   },
   {
     name: "@if on continue statement",
