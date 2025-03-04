@@ -407,7 +407,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   },
   {
     name: "conditional declaration shadowing",
-    notes: "this test must be ran with stripping disabled.", // unsupported on wesl-js (no disable stripping option)
+    notes: "this test must be run with stripping disabled.", // unsupported on wesl-js (no disable stripping option)
     weslSrc: {
       "./main.wgsl": `fn main() { package::util::func(); }`,
       "./util.wgsl": `
@@ -432,7 +432,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }`,
   },
   {
-    name: "contitional import of const_assert",
+    name: "conditional import of const_assert",
     notes:
       "const_asserts in imported modules are included if at least one of their declaration is used.",
     weslSrc: {
