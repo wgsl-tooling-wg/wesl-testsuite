@@ -259,8 +259,8 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         fn bar() { loop { @if(false) continuing { } } }`,
     },
     expectedWgsl: `
-      fn foo() { loop { continuing { } } }
-      fn bar() { loop { } }`,
+      fn foo() { loop {  continuing { } } }
+      fn bar() { loop {  } }`,
   },
   {
     name: "@if on return statement",
