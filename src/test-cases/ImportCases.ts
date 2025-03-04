@@ -43,18 +43,14 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
-      struct Uniforms {
-        a: u32
-      }
+      struct Uniforms { a: u32 }
 
       @group(0) @binding(0) var<uniform> u: Uniforms;
 
       fn main() { }
     `,
     underscoreWgsl: `
-      struct Uniforms {
-        a: u32
-      }
+      struct Uniforms { a: u32 }
 
       @group(0) @binding(0) var<uniform> u: Uniforms;
 
@@ -470,18 +466,14 @@ export const importCases: WgslTestSrc[] = [
         let a = AStruct(1u);
       }
 
-      struct AStruct {
-        x: u32
-      }
+      struct AStruct { x: u32 }
     `,
     underscoreWgsl: `
       fn main() {
         let a = package_file1_AStruct(1u);
       }
 
-      struct package_file1_AStruct {
-        x: u32
-      }
+      struct package_file1_AStruct { x: u32 }
       `,
   },
   {
@@ -513,9 +505,7 @@ export const importCases: WgslTestSrc[] = [
         return Elem(1u);
       }
 
-      struct Elem {
-        sum: u32
-      }
+      struct Elem { sum: u32 }
     `,
     underscoreWgsl: `
       fn main() {
@@ -524,9 +514,7 @@ export const importCases: WgslTestSrc[] = [
       fn package_file1_elemOne() -> package_file1_Elem {
         return package_file1_Elem(1u);
       }
-      struct package_file1_Elem {
-        sum: u32
-      }
+      struct package_file1_Elem { sum: u32 }
     `,
   },
   {
@@ -553,28 +541,16 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
-      struct SrcStruct {
-        a: AStruct
-      }
+      struct SrcStruct { a: AStruct }
 
-      struct AStruct {
-        s: BStruct
-      }
+      struct AStruct { s: BStruct }
 
-      struct BStruct {
-        x: u32
-      }
+      struct BStruct { x: u32 }
     `,
     underscoreWgsl: `
-      struct SrcStruct {
-        a: package_file1_AStruct
-      }
-      struct package_file1_AStruct {
-        s: package_file2_BStruct
-      }
-      struct package_file2_BStruct {
-        x: u32
-      }
+      struct SrcStruct { a: package_file1_AStruct }
+      struct package_file1_AStruct { s: package_file2_BStruct }
+      struct package_file2_BStruct { x: u32 }
     `,
   },
 
@@ -593,15 +569,11 @@ export const importCases: WgslTestSrc[] = [
     expectedWgsl: `
       fn foo (a: AA) { }
 
-      struct AA { 
-        x: u32 
-      }
+      struct AA { x: u32 }
     `,
     underscoreWgsl: `
       fn foo (a: package_file1_AStruct) { }
-      struct package_file1_AStruct { 
-        x: u32 
-      }
+      struct package_file1_AStruct { x: u32 }
     `,
   },
   {
@@ -627,31 +599,19 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
-      struct Base {
-        b: i32
-      }
+      struct Base { b: i32 }
 
       fn foo() -> AStruct {var a:AStruct; return a;}
 
-      struct AStruct {
-        x: Base0
-      }
+      struct AStruct { x: Base0 }
 
-      struct Base0 {
-        x: u32
-      }
+      struct Base0 { x: u32 }
     `,
     underscoreWgsl: `
-      struct Base {
-        b: i32
-      }
+      struct Base { b: i32 }
       fn foo() -> package_file1_AStruct {var a:package_file1_AStruct; return a;}
-      struct package_file1_AStruct {
-        x: package_file1_Base
-      }
-      struct package_file1_Base {
-        x: u32
-      }
+      struct package_file1_AStruct { x: package_file1_Base }
+      struct package_file1_Base { x: u32 }
     `,
   },
   {
@@ -700,18 +660,14 @@ export const importCases: WgslTestSrc[] = [
           let b = a.x;
         }
 
-        struct AStruct {
-          x: u32
-        }
+        struct AStruct { x: u32 }
     `,
     underscoreWgsl: `
       fn main() { package_file1_foo(); }
       fn package_file1_foo(a: package_file1_AStruct) {
         let b = a.x;
       }
-      struct package_file1_AStruct {
-        x: u32
-      }
+      struct package_file1_AStruct { x: u32 }
     `,
   },
   {
@@ -787,17 +743,13 @@ export const importCases: WgslTestSrc[] = [
         fn main() {
           var a: AStruct; 
         }
-        struct AStruct { 
-          x: u32 
-        }
+        struct AStruct { x: u32 }
     `,
     underscoreWgsl: `
         fn main() {
           var a: package_file1_AStruct;
         }
-        struct package_file1_AStruct { 
-          x: u32 
-        }
+        struct package_file1_AStruct { x: u32 }
     `,
   },
   {
@@ -814,15 +766,11 @@ export const importCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
         @group(0) @binding(0) var<uniform> u: Uniforms;      
-        struct Uniforms { 
-          model: mat4x4<f32> 
-        }
+        struct Uniforms { model: mat4x4<f32> }
     `,
     underscoreWgsl: `
         @group(0) @binding(0) var<uniform> u: package_file1_Uniforms;
-        struct package_file1_Uniforms { 
-          model: mat4x4<f32> 
-        }
+        struct package_file1_Uniforms { model: mat4x4<f32> }
     `,
   },
   {
@@ -839,15 +787,11 @@ export const importCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
         fn b() -> A { }
-        struct A { 
-          y: i32 
-        }
+        struct A { y: i32 }
     `,
     underscoreWgsl: `
         fn b() -> package_file1_A { }
-        struct package_file1_A { 
-          y: i32 
-        }
+        struct package_file1_A { y: i32 }
     `,
   },
   {
@@ -909,17 +853,13 @@ export const importCases: WgslTestSrc[] = [
       fn main() { foo(); }
       fn foo(a: f32) { }
       alias f32 = AStruct;
-      struct AStruct { 
-        x: u32 
-      }
+      struct AStruct { x: u32 }
     `,
     underscoreWgsl: `
       fn main() { package_file1_foo(); }
       fn package_file1_foo(a: package_file1_f32) { }
       alias package_file1_f32 = package_file1_AStruct;
-      struct package_file1_AStruct { 
-        x: u32 
-      }
+      struct package_file1_AStruct { x: u32 }
     `,
   },
   {
