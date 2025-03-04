@@ -560,19 +560,19 @@ export const importCases: WgslTestSrc[] = [
       "./main.wgsl": `
         import package::file1::AStruct as AA;
 
-        fn foo (a: AA) { }
+        fn foo(a: AA) { }
       `,
       "./file1.wgsl": `
         struct AStruct { x: u32 }
       `,
     },
     expectedWgsl: `
-      fn foo (a: AA) { }
+      fn foo(a: AA) { }
 
       struct AA { x: u32 }
     `,
     underscoreWgsl: `
-      fn foo (a: package_file1_AStruct) { }
+      fn foo(a: package_file1_AStruct) { }
       struct package_file1_AStruct { x: u32 }
     `,
   },
