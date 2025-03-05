@@ -131,11 +131,11 @@
   {
     "name": "'import as' a struct",
     "weslSrc": {
-      "./main.wgsl": "\n        import package::file1::AStruct as AA;\n\n        fn foo (a: AA) { }\n      ",
+      "./main.wgsl": "\n        import package::file1::AStruct as AA;\n\n        fn foo(a: AA) { }\n      ",
       "./file1.wgsl": "\n        struct AStruct { x: u32 }\n      "
     },
-    "expectedWgsl": "\n      fn foo (a: AA) { }\n\n      struct AA { x: u32 }\n    ",
-    "underscoreWgsl": "\n      fn foo (a: package_file1_AStruct) { }\n      struct package_file1_AStruct { x: u32 }\n    "
+    "expectedWgsl": "\n      fn foo(a: AA) { }\n\n      struct AA { x: u32 }\n    ",
+    "underscoreWgsl": "\n      fn foo(a: package_file1_AStruct) { }\n      struct package_file1_AStruct { x: u32 }\n    "
   },
   {
     "name": "import a struct with name conflicting support struct",
