@@ -458,6 +458,43 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
 
       fn package_foo_func() {}`,
   },
+  {
+    name: "double conditional import of const_assert",
+    notes: `
+       const_asserts in imported modules are included if at least one of their declaration is used.
+       But each const_assert should be included only once.`,
+    weslSrc: {
+      "./main.wgsl": `
+          fn main() {
+            @if(true) package::foo::func();
+            @if(true) package::foo::bar();
+          }
+      `,
+      "./foo.wgsl": `
+          const_assert 0 < 1;
+          fn func() {}
+          fn bar() {} 
+      `,
+    },
+    expectedWgsl: `
+      const_assert 0 < 1;
+      fn main() {
+        func();
+        bar();
+      }
+      fn func() {}
+      fn bar() {}
+    `,
+    underscoreWgsl: `
+      const_assert 0 < 1;
+      fn main() {
+        package_foo_func();
+        package_foo_bar();
+      }
+      fn package_foo_func() {}
+      fn package_foo_bar() {}
+    `,
+  },
 ];
 
 export default conditionalTranslationCases;
