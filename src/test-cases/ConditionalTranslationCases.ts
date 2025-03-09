@@ -365,7 +365,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       const c1 = 10;
       const c3 = 10;`,
   },
-  // though cases
+  // tough cases
   {
     name: "declaration shadowing",
     weslSrc: {
@@ -495,6 +495,65 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn package_foo_bar() {}
     `,
   },
+  {
+    name: "conditional transitive const",
+    weslSrc: {
+      "./main.wgsl": `
+          const a = package::util::b;
+      `,
+      "./util.wgsl": `
+          @if(true) const b = c;
+          @if(false) const c = 7;
+          @if(true) const c = 9;
+       `,
+    },
+    expectedWgsl: `
+      const a = b;
+      const b = c;
+      const c = 9;
+    `,
+    underscoreWgsl: `
+      const a = package_util_b;
+      const package_util_b = package_util_c;
+      const package_util_c = 9;
+    `,
+  },
+  {
+    name: "conditional transitive fn",
+    weslSrc: {
+      "./main.wgsl": `
+          fn main() { package::util::f(); }
+      `,
+      "./util.wgsl": `
+          @if(true) fn f() { g(); }
+          @if(false) fn g() { let a = 7; }
+          @if(true) fn g() { let a = 9; } 
+       `,
+    },
+    expectedWgsl: `
+      fn main() { f(); }
+      fn f() { g(); }
+      fn g() { let a = 9; }
+    `,
+    underscoreWgsl: `
+      fn main() { package_util_f(); }
+      fn package_util_f() { package_util_g(); }
+      fn package_util_g() { let a = 9; }
+    `,
+  },
+  // {
+  //   name: "",
+  //   weslSrc: {
+  //     "./main.wgsl": `
+  //     `,
+  //     "./util.wgsl": `
+  //      `,
+  //   },
+  //   expectedWgsl: `
+  //   `,
+  //   underscoreWgsl: `
+  //   `,
+  // },
 ];
 
 export default conditionalTranslationCases;
