@@ -1057,9 +1057,38 @@ export const importCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
-      tbd
+      struct FragmentInput {
+        pixel: vec2f,
+        frame: f32,
+      }
+
+      @fragment fn fragment(in: FragmentInput) -> vec4f {
+        initRNG(in.pixel, in.frame);
+        return vec4f(1.0, 0.0, 0.0, 1.0);
+      }
+
+      fn initRNG(pixel: vec2u, frame: u32) {
+        rngState = pixel.x + pixel.y * 1000u + frame * 100000u;
+      }
+
+      var<private> rngState: u32;
     `,
     underscoreWgsl: `
+      struct FragmentInput {
+        pixel: vec2f,
+        frame: f32,
+      }
+
+      @fragment fn fragment(in: FragmentInput) -> vec4f {
+        package_rand_initRNG(in.pixel, in.frame);
+        return vec4f(1.0, 0.0, 0.0, 1.0);
+      }
+
+      fn package_rand_initRNG(pixel: vec2u, frame: u32) {
+        package_rand_rngState = pixel.x + pixel.y * 1000u + frame * 100000u;
+      }
+
+      var<private> package_rand_rngState: u32;
     `,
   },
 
@@ -1084,6 +1113,29 @@ export const importCases: WgslTestSrc[] = [
     underscoreWgsl: `
       var a = package_file1_b;
       var package_file1_b: package_file1_Bee;
+      struct package_file1_Bee { sting: f32 }
+    `,
+  },
+
+  {
+    name: "import var<private> with struct type",
+    weslSrc: {
+      "./main.wgsl": `
+          var<private> a = package::file1::b;
+      `,
+      "./file1.wgsl": `
+          struct Bee { sting: f32 }
+          var<private> b: Bee;
+      `,
+    },
+    expectedWgsl: `
+      var<private> a = b;
+      var<private> b: Bee;
+      struct Bee { sting: f32 }
+    `,
+    underscoreWgsl: `
+      var<private> a = package_file1_b;
+      var<private> package_file1_b: package_file1_Bee;
       struct package_file1_Bee { sting: f32 }
     `,
   },
