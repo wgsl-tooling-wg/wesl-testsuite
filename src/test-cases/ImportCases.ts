@@ -1091,9 +1091,25 @@ export const importCases: WgslTestSrc[] = [
       var<private> package_rand_rngState: u32;
     `,
   },
-
-  // TODO add case for uninitialized override
-
+  {
+    name: "uninitialized override",
+    weslSrc: {
+      "./main.wgsl": `
+          var a = package::file::b;
+      `,
+      "./file.wgsl": `
+          override b: u32;
+      `,
+    },
+    expectedWgsl: `
+      var a = b;
+      override b: u32;
+    `,
+    underscoreWgsl: `
+      var a = package_file_b;
+      override package_file_b: u32;
+    `,
+  },
   {
     name: "import var with struct type",
     weslSrc: {
