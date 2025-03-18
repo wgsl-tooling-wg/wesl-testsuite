@@ -940,7 +940,7 @@ export const importCases: WgslTestSrc[] = [
           package_file1_bar();
         }
         fn package_file1_bar() { }
-    `
+    `,
   },
   {
     name: "inline super:: reference",
@@ -965,7 +965,7 @@ export const importCases: WgslTestSrc[] = [
           package_file1_bar();
         }
         fn package_file1_bar() { }
-    `
+    `,
   },
   {
     name: "import super::file1",
@@ -992,7 +992,7 @@ export const importCases: WgslTestSrc[] = [
           package_file1_bar();
         }
         fn package_file1_bar() { }
-    `
+    `,
   },
   {
     name: "declaration after subscope",
@@ -1028,7 +1028,64 @@ export const importCases: WgslTestSrc[] = [
         var foo = 1;
       }
       fn package_file1_foo() { }
-    `
+    `,
+  },
+
+  {
+    name: "uninitialized global var",
+    weslSrc: {
+      "./main.wgsl": `
+        import package::rand::{initRNG};
+
+        struct FragmentInput {
+            pixel: vec2f,
+            frame: f32,
+        }
+
+        @fragment
+        fn fragment(in: FragmentInput) -> vec4f {
+            initRNG(in.pixel, in.frame);
+            return vec4f(1.0, 0.0, 0.0, 1.0);
+        }
+      `,
+      "./rand.wgsl": `
+        var<private> rngState: u32;
+
+        fn initRNG(pixel: vec2u, frame: u32) {
+            rngState = pixel.x + pixel.y * 1000u + frame * 100000u;
+        }
+      `,
+    },
+    expectedWgsl: `
+      tbd
+    `,
+    underscoreWgsl: `
+    `,
+  },
+
+  // TODO add case for uninitialized override
+
+  {
+    name: "import var with struct type",
+    weslSrc: {
+      "./main.wgsl": `
+          var a = package::file1::b;
+      `,
+      "./file1.wgsl": `
+          struct Bee { sting: f32 }
+          var b: Bee;
+      `,
+    },
+    expectedWgsl: `
+      var a = b;
+      var b: Bee;
+      struct Bee { sting: f32 }
+    `,
+    underscoreWgsl: `
+      var a = package_file1_b;
+      var package_file1_b: package_file1_Bee;
+      struct package_file1_Bee { sting: f32 }
+    `,
   },
 
   // {
