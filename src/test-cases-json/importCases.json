@@ -296,5 +296,41 @@
     },
     "expectedWgsl": "\n      fn main() {\n        {\n          foo();\n        }\n        var foo = 1;\n      }\n      fn foo() { }\n    ",
     "underscoreWgsl": "\n      fn main() {\n        {\n          package_file1_foo();\n        }\n        var foo = 1;\n      }\n      fn package_file1_foo() { }\n    "
+  },
+  {
+    "name": "uninitialized global var",
+    "weslSrc": {
+      "./main.wgsl": "\n        import package::rand::{initRNG};\n\n        struct FragmentInput {\n            pixel: vec2f,\n            frame: f32,\n        }\n\n        @fragment\n        fn fragment(in: FragmentInput) -> vec4f {\n            initRNG(in.pixel, in.frame);\n            return vec4f(1.0, 0.0, 0.0, 1.0);\n        }\n      ",
+      "./rand.wgsl": "\n        var<private> rngState: u32;\n\n        fn initRNG(pixel: vec2u, frame: u32) {\n            rngState = pixel.x + pixel.y * 1000u + frame * 100000u;\n        }\n      "
+    },
+    "expectedWgsl": "\n      struct FragmentInput {\n        pixel: vec2f,\n        frame: f32,\n      }\n\n      @fragment fn fragment(in: FragmentInput) -> vec4f {\n        initRNG(in.pixel, in.frame);\n        return vec4f(1.0, 0.0, 0.0, 1.0);\n      }\n\n      fn initRNG(pixel: vec2u, frame: u32) {\n        rngState = pixel.x + pixel.y * 1000u + frame * 100000u;\n      }\n\n      var<private> rngState: u32;\n    ",
+    "underscoreWgsl": "\n      struct FragmentInput {\n        pixel: vec2f,\n        frame: f32,\n      }\n\n      @fragment fn fragment(in: FragmentInput) -> vec4f {\n        package_rand_initRNG(in.pixel, in.frame);\n        return vec4f(1.0, 0.0, 0.0, 1.0);\n      }\n\n      fn package_rand_initRNG(pixel: vec2u, frame: u32) {\n        package_rand_rngState = pixel.x + pixel.y * 1000u + frame * 100000u;\n      }\n\n      var<private> package_rand_rngState: u32;\n    "
+  },
+  {
+    "name": "uninitialized override",
+    "weslSrc": {
+      "./main.wgsl": "\n          var a = package::file::b;\n      ",
+      "./file.wgsl": "\n          override b: u32;\n      "
+    },
+    "expectedWgsl": "\n      var a = b;\n      override b: u32;\n    ",
+    "underscoreWgsl": "\n      var a = package_file_b;\n      override package_file_b: u32;\n    "
+  },
+  {
+    "name": "import var with struct type",
+    "weslSrc": {
+      "./main.wgsl": "\n          var a = package::file1::b;\n      ",
+      "./file1.wgsl": "\n          struct Bee { sting: f32 }\n          var b: Bee;\n      "
+    },
+    "expectedWgsl": "\n      var a = b;\n      var b: Bee;\n      struct Bee { sting: f32 }\n    ",
+    "underscoreWgsl": "\n      var a = package_file1_b;\n      var package_file1_b: package_file1_Bee;\n      struct package_file1_Bee { sting: f32 }\n    "
+  },
+  {
+    "name": "import var<private> with struct type",
+    "weslSrc": {
+      "./main.wgsl": "\n          var<private> a = package::file1::b;\n      ",
+      "./file1.wgsl": "\n          struct Bee { sting: f32 }\n          var<private> b: Bee;\n      "
+    },
+    "expectedWgsl": "\n      var<private> a = b;\n      var<private> b: Bee;\n      struct Bee { sting: f32 }\n    ",
+    "underscoreWgsl": "\n      var<private> a = package_file1_b;\n      var<private> package_file1_b: package_file1_Bee;\n      struct package_file1_Bee { sting: f32 }\n    "
   }
 ]
