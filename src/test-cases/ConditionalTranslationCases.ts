@@ -1,4 +1,4 @@
-import { WgslTestSrc } from "../TestSchema.js";
+import { WgslTestSrc } from "../TestSchema.ts";
 
 export const conditionalTranslationCases: WgslTestSrc[] = [
   // first we check that if attributes work on all valid locations.

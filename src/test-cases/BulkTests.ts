@@ -1,4 +1,4 @@
-import { BulkTest } from "../TestSchema.js";
+import { BulkTest } from "../TestSchema.ts";
 
 /** tests run on projects in the https://github.com/wgsl-tooling-wg/community-wgsl repo */
 export const bulkTests: BulkTest[] = [

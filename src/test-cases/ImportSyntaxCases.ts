@@ -1,4 +1,4 @@
-import { ParsingTest } from "../TestSchema.js";
+import { ParsingTest } from "../TestSchema.ts";
 
 export const importSyntaxCases: ParsingTest[] = [
   /* ------  failure cases  -------   */

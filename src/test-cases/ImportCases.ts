@@ -1,4 +1,4 @@
-import { WgslTestSrc } from "../TestSchema.js";
+import { WgslTestSrc } from "../TestSchema.ts";
 
 export const importCases: WgslTestSrc[] = [
   {
@@ -1155,7 +1155,6 @@ export const importCases: WgslTestSrc[] = [
       struct package_file1_Bee { sting: f32 }
     `,
   },
-
   // {
   //   name: "",
   //   weslSrc: {
