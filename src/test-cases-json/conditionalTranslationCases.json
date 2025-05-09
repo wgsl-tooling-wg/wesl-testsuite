@@ -81,7 +81,7 @@
     "weslSrc": {
       "./main.wgsl": "struct s { @if(true) foo: u32, @if(false) bar: u32, }"
     },
-    "expectedWgsl": "struct s { foo: u32, }"
+    "expectedWgsl": "struct s { foo: u32 }"
   },
   {
     "name": "@if on compound statement",
@@ -144,7 +144,7 @@
     "weslSrc": {
       "./main.wgsl": "fn foo() { loop { continuing { @if(true) break if 0 < 1; } } } fn bar() { loop { continuing { @if(false) break if 1 < 2; } } }"
     },
-    "expectedWgsl": "fn foo() { loop { continuing { break if 0 < 1; } }; } fn bar() { loop { continuing { } }; }"
+    "expectedWgsl": "fn foo() { loop { continuing { break if 0 < 1; } } } fn bar() { loop { continuing { } } }"
   },
   {
     "name": "@if on continue statement",
@@ -217,8 +217,17 @@
     "expectedWgsl": "const c1 = 10; const c3 = 10;"
   },
   {
-    "name": "contitional declaration shadowing",
-    "notes": "this test must be ran with stripping disabled.",
+    "name": "declaration shadowing",
+    "weslSrc": {
+      "./main.wgsl": "fn main() { package::util::func(); }",
+      "./util.wgsl": "const foo = 10; const bar = 10; fn func() { @if(true) let foo = 20; let x = foo; /* foo is shadowed. */ @if(false) let bar = 20; let y = bar; /* bar is not shadowed. */ }"
+    },
+    "expectedWgsl": "fn main() { func(); } fn func() { let foo = 20; let x = foo; /* foo is shadowed. */ let y = bar; /* bar is not shadowed. */ } const bar = 10;",
+    "underscoreWgsl": "fn main() { package_util_func(); } fn package_util_func() { let foo = 20; let x = foo; /* foo is shadowed. */ let y = package_util_bar; /* bar is not shadowed. */ } const package_util_bar = 10;"
+  },
+  {
+    "name": "conditional declaration shadowing",
+    "notes": "this test must be run with stripping disabled.",
     "weslSrc": {
       "./main.wgsl": "fn main() { package::util::func(); }",
       "./util.wgsl": "const foo = 10; const bar = 10; fn func() { @if(true) let foo = 20; let x = foo; /* foo is shadowed. */ @if(false) let bar = 20; let y = bar; /* bar is not shadowed. */ }"
@@ -226,13 +235,42 @@
     "underscoreWgsl": "fn main() { package_util_func(); } const package_util_foo = 10; const package_util_bar = 10; fn package_util_func() { let foo = 20; let x = foo; let y = package_util_bar; }"
   },
   {
-    "name": "contitional import of const_assert",
+    "name": "conditional import of const_assert",
     "notes": "const_asserts in imported modules are included if at least one of their declaration is used.",
     "weslSrc": {
       "./main.wgsl": "fn main() { @if(true) package::foo::func(); @if(false) package::bar::func(); }",
       "./foo.wgsl": "const_assert 0 < 1; fn func() {}",
       "./bar.wgsl": "const_assert 1 < 2; fn func() {}"
     },
-    "underscoreWgsl": "fn main() { package_foo_func(); } const_assert 0 < 1; fn package_foo_func() {}"
+    "expectedWgsl": "const_assert 0 < 1; fn main() { func(); } fn func() {}",
+    "underscoreWgsl": "const_assert 0 < 1; fn main() { package_foo_func(); } fn package_foo_func() {}"
+  },
+  {
+    "name": "double conditional import of const_assert",
+    "notes": "const_asserts in imported modules are included if at least one of their declaration is used. But each const_assert should be included only once.",
+    "weslSrc": {
+      "./main.wgsl": "fn main() { @if(true) package::foo::func(); @if(true) package::foo::bar(); }",
+      "./foo.wgsl": "const_assert 0 < 1; fn func() {} fn bar() {}"
+    },
+    "expectedWgsl": "const_assert 0 < 1; fn main() { func(); bar(); } fn func() {} fn bar() {}",
+    "underscoreWgsl": "const_assert 0 < 1; fn main() { package_foo_func(); package_foo_bar(); } fn package_foo_func() {} fn package_foo_bar() {}"
+  },
+  {
+    "name": "conditional transitive const",
+    "weslSrc": {
+      "./main.wgsl": "const a = package::util::b;",
+      "./util.wgsl": "@if(true) const b = c; @if(false) const c = 7; @if(true) const c = 9;"
+    },
+    "expectedWgsl": "const a = b; const b = c; const c = 9;",
+    "underscoreWgsl": "const a = package_util_b; const package_util_b = package_util_c; const package_util_c = 9;"
+  },
+  {
+    "name": "conditional transitive fn",
+    "weslSrc": {
+      "./main.wgsl": "fn main() { package::util::f(); }",
+      "./util.wgsl": "@if(true) fn f() { g(); } @if(false) fn g() { let a = 7; } @if(true) fn g() { let a = 9; }"
+    },
+    "expectedWgsl": "fn main() { f(); } fn f() { g(); } fn g() { let a = 9; }",
+    "underscoreWgsl": "fn main() { package_util_f(); } fn package_util_f() { package_util_g(); } fn package_util_g() { let a = 9; }"
   }
 ]

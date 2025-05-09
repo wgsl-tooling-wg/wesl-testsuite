@@ -44,6 +44,10 @@
     "fails": true
   },
   {
+    "src": "import foo::as::b;",
+    "fails": true
+  },
+  {
     "src": "import foo::super::bar::baz;",
     "fails": true
   },
@@ -68,6 +72,9 @@
   },
   {
     "src": "import a::b::c;"
+  },
+  {
+    "src": "import a::common::c;"
   },
   {
     "src": "import foo::bar;"
@@ -100,9 +107,9 @@
     "src": "import a::b::{c as foo};"
   },
   {
-    "src": "import super::foo::bar;\n          fn main() {}"
+    "src": "import super::foo::bar; fn main() {}"
   },
   {
-    "src": "\n    import bevy_pbr::{\n             mesh_view_bindings,\n             utils::{PI, noise},\n             lighting\n           };"
+    "src": "import bevy_pbr::{ mesh_view_bindings, utils::{PI, noise}, lighting };"
   }
 ]
