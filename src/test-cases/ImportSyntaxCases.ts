@@ -26,6 +26,7 @@ export const importSyntaxCases: ParsingTest[] = [
   { src: `import super::b::c::d;` },
   { src: "import super::foo ::bar;" },
   { src: `import a::b::c;` },
+  { src: `import a::common::c;` },
   { src: "import foo::bar;" },
   { src: "import { foo};" },
   { src: "import {a::b as c, d};" },
