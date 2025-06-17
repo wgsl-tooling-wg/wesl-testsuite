@@ -14,6 +14,7 @@ export const importSyntaxCases: ParsingTest[] = [
   { src: "import { foo } as bar;", fails: true },
   { src: "import foo::{};", fails: true },
   { src: "import foo::a as b::b;", fails: true },
+  { src: "import foo::as::b;", fails: true },
   { src: "import foo::super::bar::baz;", fails: true },
   { src: "import foo::bee as boo::bar;", fails: true },
 
@@ -25,6 +26,7 @@ export const importSyntaxCases: ParsingTest[] = [
   { src: `import super::b::c::d;` },
   { src: "import super::foo ::bar;" },
   { src: `import a::b::c;` },
+  { src: `import a::common::c;` },
   { src: "import foo::bar;" },
   { src: "import { foo};" },
   { src: "import {a::b as c, d};" },
