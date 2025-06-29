@@ -1,4 +1,4 @@
-import { WgslTestSrc } from "../TestSchema.ts";
+import type { WgslTestSrc } from "../TestSchema.ts";
 
 export const importCases: WgslTestSrc[] = [
   {
