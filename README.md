@@ -39,13 +39,13 @@ pnpm install
 #### Generate JSON test cases from TypeScript
 
 ```sh
-pnpm cases
+pnpm build
 ```
 
 #### Generate JSON test cases from TypeScript continuously
 
 ```sh
-pnpm cases:watch
+pnpm build:watch
 ```
 
 ## License
