@@ -332,5 +332,31 @@
     },
     "expectedWgsl": "var<private> a = b; var<private> b: Bee; struct Bee { sting: f32 }",
     "underscoreWgsl": "var<private> a = package_file1_b; var<private> package_file1_b: package_file1_Bee; struct package_file1_Bee { sting: f32 }"
+  },
+  {
+    "name": "const_asserts in root module are included",
+    "weslSrc": {
+      "./main.wgsl": "const_assert true;"
+    },
+    "expectedWgsl": "const_assert true;",
+    "underscoreWgsl": "const_assert true;"
+  },
+  {
+    "name": "const_asserts in used modules are included",
+    "weslSrc": {
+      "./main.wgsl": "fn main() { package::foo::bar(); }",
+      "./foo.wgsl": "const_assert true; fn bar() { }"
+    },
+    "expectedWgsl": "fn main() { bar(); } const_assert true; fn bar() { }",
+    "underscoreWgsl": "fn main() { package_foo_bar(); } const_assert true; fn package_foo_bar() { }"
+  },
+  {
+    "name": "const_asserts in unused modules are not included",
+    "weslSrc": {
+      "./main.wgsl": "import foo;",
+      "./foo.wgsl": "const_assert true;"
+    },
+    "expectedWgsl": "",
+    "underscoreWgsl": ""
   }
 ]
