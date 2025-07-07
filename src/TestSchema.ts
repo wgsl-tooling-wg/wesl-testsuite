@@ -25,12 +25,21 @@ export interface ParsingTest {
 export interface BulkTest {
   /** human readable name of test set */
   name: string;
-  /** directory within https://github.com/wgsl-tooling-wg/community-wgsl  */
-  baseDir: string;
-  /** exclude files containing these strings or regexes */
-  exclude?: string[];
-  /** names of test files inside of baseDir ('/' as separator for partial paths) */
-  include?: string[];
-  /** glob patters of test files */
-  globInclude?: string[];
+  /** directory within this repository  */
+  source:
+    | {
+        dir: string;
+      }
+    | {
+        /**
+         * A HTTP git URL.
+         * Fetch these tests via `git clone --depth=1 URL-GOES-HERE --revision REVISION-GOES-HERE
+         */
+        gitUrl: string;
+        revision: string;
+        /** inclusion globs, default value is all wesl and wgsl files */
+        include?: string[];
+        /** exclusion globs */
+        exclude?: string[];
+      };
 }
