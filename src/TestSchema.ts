@@ -36,7 +36,10 @@ export interface BulkTest {
     url: string;
     revision: string;
   };
-  /** inclusion globs, default value is all wesl and wgsl files */
+  /**
+   * inclusion globs, default value is all wesl and wgsl files.
+   * Optimisation: The generated JSON will have a static list of files here
+   */
   include?: string[];
   /** exclusion globs */
   exclude?: string[];
