@@ -10,7 +10,7 @@
     "src"
   ],
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.10"
