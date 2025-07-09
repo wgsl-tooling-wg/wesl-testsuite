@@ -26,20 +26,18 @@ export interface BulkTest {
   /** human readable name of test set */
   name: string;
   /** directory within this repository  */
-  source:
-    | {
-        dir: string;
-      }
-    | {
-        /**
-         * A HTTP git URL.
-         * Fetch these tests via `git clone --depth=1 URL-GOES-HERE --revision REVISION-GOES-HERE
-         */
-        gitUrl: string;
-        revision: string;
-        /** inclusion globs, default value is all wesl and wgsl files */
-        include?: string[];
-        /** exclusion globs */
-        exclude?: string[];
-      };
+  baseDir: string;
+
+  /**
+   * A HTTP git URL.
+   * Fetch these tests via `git clone --depth=1 URL-GOES-HERE --revision REVISION-GOES-HERE
+   */
+  git?: {
+    url: string;
+    revision: string;
+  };
+  /** inclusion globs, default value is all wesl and wgsl files */
+  include?: string[];
+  /** exclusion globs */
+  exclude?: string[];
 }
