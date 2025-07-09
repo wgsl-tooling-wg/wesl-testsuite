@@ -4,11 +4,12 @@
     "baseDir": "shaders/webgpu-samples",
     "git": {
       "url": "https://github.com/webgpu/webgpu-samples.git",
-      "revision": "372c6171cb94f07f3ffacf930dd58235e547abaf"
+      "revision": "8facdad40d303b9650f975bed00e68a1409d9bc2"
     },
     "exclude": [],
     "include": [
       "shaders/basic.vert.wgsl",
+      "shaders/black.frag.wgsl",
       "shaders/fullscreenTexturedQuad.wgsl",
       "shaders/red.frag.wgsl",
       "shaders/sampleExternalTexture.frag.wgsl",
@@ -19,6 +20,7 @@
       "sample/volumeRenderingTexture3D/volume.wgsl",
       "sample/texturedCube/sampleTextureMixColor.frag.wgsl",
       "sample/textRenderingMsdf/msdfText.wgsl",
+      "sample/stencilMask/simple-lighting.wgsl",
       "sample/shadowMapping/fragment.wgsl",
       "sample/shadowMapping/vertex.wgsl",
       "sample/shadowMapping/vertexShadow.wgsl",
@@ -44,6 +46,8 @@
       "sample/multipleCanvases/solidColorLit.wgsl",
       "sample/instancedCube/instanced.vert.wgsl",
       "sample/imageBlur/blur.wgsl",
+      "sample/generateMipmap/generateMipmap.wgsl",
+      "sample/generateMipmap/texturedGeometry.wgsl",
       "sample/gameOfLife/compute.wgsl",
       "sample/gameOfLife/frag.wgsl",
       "sample/gameOfLife/vert.wgsl",
@@ -58,11 +62,10 @@
       "sample/computeBoids/sprite.wgsl",
       "sample/computeBoids/updateSprites.wgsl",
       "sample/cameras/cube.wgsl",
+      "sample/blending/texturedQuad.wgsl",
       "sample/bitonicSort/atomicToZero.wgsl",
       "sample/bitonicSort/bitonicDisplay.frag.wgsl",
       "sample/animometer/animometer.wgsl",
-      "sample/alphaToCoverage/renderWithAlphaToCoverage.wgsl",
-      "sample/alphaToCoverage/showMultisampleTexture.wgsl",
       "sample/a-buffer/composite.wgsl",
       "sample/a-buffer/opaque.wgsl",
       "sample/a-buffer/translucent.wgsl"

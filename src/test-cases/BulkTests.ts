@@ -7,7 +7,7 @@ export const bulkTests: BulkTest[] = [
     baseDir: "shaders/webgpu-samples",
     git: {
       url: "https://github.com/webgpu/webgpu-samples.git",
-      revision: "372c6171cb94f07f3ffacf930dd58235e547abaf",
+      revision: "8facdad40d303b9650f975bed00e68a1409d9bc2",
     },
     exclude: ["sample/skinnedMesh/**/*", "sample/cornell/**/*"],
   },
