@@ -67,7 +67,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     expectedWgsl: "alias foo = f32;",
   },
   {
-    name: "@if on module scope const_assert",
+    name: "@if on module-scope const_assert",
     weslSrc: {
       "./main.wgsl": `
         @if(true) const_assert 0 < 1;
@@ -382,7 +382,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
       fn main() { func(); }
-      
+
       fn func() {
         let foo = 20;
         let x = foo; /* foo is shadowed. */
@@ -392,7 +392,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     `,
     underscoreWgsl: `
       fn main() { package_util_func(); }
-      
+
       fn package_util_func() {
         let foo = 20;
         let x = foo; /* foo is shadowed. */
@@ -400,32 +400,6 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       }
       const package_util_bar = 10;
     `,
-  },
-  {
-    name: "conditional declaration shadowing",
-    notes: "this test must be run with stripping disabled.", // unsupported on wesl-js (no disable stripping option)
-    weslSrc: {
-      "./main.wgsl": `fn main() { package::util::func(); }`,
-      "./util.wgsl": `
-        const foo = 10;
-        const bar = 10;
-        fn func() {
-          @if(true) let foo = 20;
-          let x = foo; /* foo is shadowed. */
-          @if(false) let bar = 20;
-          let y = bar; /* bar is not shadowed. */
-        }`,
-    },
-    underscoreWgsl: `
-      fn main() { package_util_func(); }
-      
-      const package_util_foo = 10;
-      const package_util_bar = 10;
-      fn package_util_func() {
-        let foo = 20;
-        let x = foo;
-        let y = package_util_bar;
-      }`,
   },
   {
     name: "conditional import of const_assert",
@@ -473,7 +447,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       "./foo.wgsl": `
           const_assert 0 < 1;
           fn func() {}
-          fn bar() {} 
+          fn bar() {}
       `,
     },
     expectedWgsl: `
@@ -527,7 +501,7 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       "./util.wgsl": `
           @if(true) fn f() { g(); }
           @if(false) fn g() { let a = 7; }
-          @if(true) fn g() { let a = 9; } 
+          @if(true) fn g() { let a = 9; }
        `,
     },
     expectedWgsl: `

@@ -131,7 +131,7 @@ export const importCases: WgslTestSrc[] = [
     name: `imported fn calls support fn with root conflict`,
     weslSrc: {
       "./main.wgsl": `
-        import package::file1::foo; 
+        import package::file1::foo;
 
         fn main() { foo(); }
         fn conflicted() { }
@@ -209,7 +209,7 @@ export const importCases: WgslTestSrc[] = [
       `,
       "./file1.wgsl": `
         import package::file2::grand;
-        
+
         fn mid() { grand(); }
       `,
       "./file2.wgsl": `
@@ -288,7 +288,7 @@ export const importCases: WgslTestSrc[] = [
       "./main.wgsl": `
         import package::file1::foo as bar;
 
-        fn support() { 
+        fn support() {
           bar();
         }
       `,
@@ -329,7 +329,7 @@ export const importCases: WgslTestSrc[] = [
       "./main.wgsl": `
         import package::file1::foo;
 
-        fn support() { 
+        fn support() {
           foo();
         }
       `,
@@ -452,7 +452,7 @@ export const importCases: WgslTestSrc[] = [
           import package::file1::AStruct;
 
           fn main() {
-            let a = AStruct(1u); 
+            let a = AStruct(1u);
           }
       `,
       "./file1.wgsl": `
@@ -656,7 +656,7 @@ export const importCases: WgslTestSrc[] = [
     expectedWgsl: `
         fn main() { foo(); }
 
-        fn foo(a: AStruct) { 
+        fn foo(a: AStruct) {
           let b = a.x;
         }
 
@@ -732,7 +732,7 @@ export const importCases: WgslTestSrc[] = [
         import package::file1::AStruct;
 
         fn main() {
-          var a: AStruct; 
+          var a: AStruct;
         }
       `,
       "./file1.wgsl": `
@@ -741,7 +741,7 @@ export const importCases: WgslTestSrc[] = [
     },
     expectedWgsl: `
         fn main() {
-          var a: AStruct; 
+          var a: AStruct;
         }
         struct AStruct { x: u32 }
     `,
@@ -758,14 +758,14 @@ export const importCases: WgslTestSrc[] = [
       "./main.wgsl": `
         import package::file1::Uniforms;
 
-        @group(0) @binding(0) var<uniform> u: Uniforms;      
+        @group(0) @binding(0) var<uniform> u: Uniforms;
       `,
       "./file1.wgsl": `
         struct Uniforms { model: mat4x4<f32> }
       `,
     },
     expectedWgsl: `
-        @group(0) @binding(0) var<uniform> u: Uniforms;      
+        @group(0) @binding(0) var<uniform> u: Uniforms;
         struct Uniforms { model: mat4x4<f32> }
     `,
     underscoreWgsl: `
@@ -1154,6 +1154,45 @@ export const importCases: WgslTestSrc[] = [
       var<private> package_file1_b: package_file1_Bee;
       struct package_file1_Bee { sting: f32 }
     `,
+  },
+  {
+    name: "const_asserts in root module are included",
+    weslSrc: {
+      "./main.wgsl": "const_assert true;"
+    },
+    expectedWgsl: "const_assert true;",
+    underscoreWgsl: "const_assert true;"
+  },
+  {
+    name: "const_asserts in used modules are included",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() { package::foo::bar(); }
+      `,
+      "./foo.wgsl": `
+        const_assert true;
+        fn bar() { }
+      `,
+    },
+    expectedWgsl: `
+      fn main() { bar(); }
+      const_assert true;
+      fn bar() { }
+    `,
+    underscoreWgsl: `
+      fn main() { package_foo_bar(); }
+      const_assert true;
+      fn package_foo_bar() { }
+    `
+  },
+  {
+    name: "const_asserts in unused modules are not included",
+    weslSrc: {
+      "./main.wgsl": "import foo;",
+      "./foo.wgsl": "const_assert true;"
+    },
+    expectedWgsl: "",
+    underscoreWgsl: ""
   },
   // {
   //   name: "",
