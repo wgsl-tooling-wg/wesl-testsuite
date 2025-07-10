@@ -11,7 +11,8 @@
   ],
   "exports": {
     ".": "./src/index.js",
-    "./fetch-bulk-tests": "./src/fetch-bulk-tests.ts"
+    "./fetch-bulk-tests": "./src/fetch-bulk-tests.ts",
+    "./test-cases": "./src/test-cases-json"
   },
   "devDependencies": {
     "@types/node": "^24.0.10"
