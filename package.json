@@ -10,7 +10,8 @@
     "src"
   ],
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.js",
+    "./fetch-bulk-tests": "./src/fetch-bulk-tests.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.10"
