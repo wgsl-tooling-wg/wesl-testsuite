@@ -59,7 +59,7 @@ export async function fetchBulkTest(bulkTest: BulkTest) {
         bulkTest.baseDir,
       ],
       {
-        cwd: new URL("..", import.meta.url),
+        cwd: BaseDir,
       }
     );
     if (cloneResult.status !== 0) {
