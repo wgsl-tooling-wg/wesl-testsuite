@@ -2,11 +2,13 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import type { BulkTest } from "./TestSchema.ts";
 
+export const BaseDir = new URL("..", import.meta.url);
+
 // Modeled after https://github.com/gfx-rs/wgpu/blob/c0a580d6f0343a725b3defa8be4fdf0a9691eaad/xtask/src/cts.rs
 export async function fetchBulkTest(bulkTest: BulkTest) {
   if (!bulkTest.git) return;
 
-  const baseDir = new URL(bulkTest.baseDir, new URL("..", import.meta.url));
+  const baseDir = new URL(bulkTest.baseDir, BaseDir);
   if (
     await fs.access(baseDir).then(
       () => true,
