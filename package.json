@@ -8,7 +8,9 @@
   },
   "files": ["src"],
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./fetch-bulk-tests": "./src/fetch-bulk-tests.ts",
+    "./test-cases-json/*": "./src/test-cases-json/*.json"
   },
   "devDependencies": {
     "@types/node": "^24.0.10"

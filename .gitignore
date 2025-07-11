@@ -12,3 +12,5 @@ bin
 
 # typescript build info cache files 
 *.tsbuildinfo
+
+shaders/webgpu-samples
