@@ -665,8 +665,8 @@ export const elseCases: WgslTestSrc[] = [
     name: "@else with conditional import",
     weslSrc: {
       "./main.wgsl": `
-        @if(false) import package::a;
-        @else import package::b;
+        @if(false) import package::a::val;
+        @else import package::b::val;
 
         const c = val;`,
       "./a.wgsl": `const val = 1;`,
@@ -675,6 +675,10 @@ export const elseCases: WgslTestSrc[] = [
     expectedWgsl: `
       const c = val;
       const val = 2;
+    `,
+    underscoreWgsl: `
+      const c = package_b_val;
+      const package_b_val = 2;
     `,
   },
   {

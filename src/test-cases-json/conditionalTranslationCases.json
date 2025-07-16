@@ -323,11 +323,12 @@
   {
     "name": "@else with conditional import",
     "weslSrc": {
-      "./main.wgsl": "@if(false) import package::a; @else import package::b; const c = val;",
+      "./main.wgsl": "@if(false) import package::a::val; @else import package::b::val; const c = val;",
       "./a.wgsl": "const val = 1;",
       "./b.wgsl": "const val = 2;"
     },
-    "expectedWgsl": "const c = val; const val = 2;"
+    "expectedWgsl": "const c = val; const val = 2;",
+    "underscoreWgsl": "const c = package_b_val; const package_b_val = 2;"
   },
   {
     "name": "@else declaration shadowing",
