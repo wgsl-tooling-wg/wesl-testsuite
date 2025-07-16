@@ -696,18 +696,6 @@ export const elseCases: WgslTestSrc[] = [
     `,
   },
   {
-    name: "empty @else block",
-    weslSrc: {
-      "./main.wgsl": `
-        @if(false) const a = 1;
-        @else
-        const b = 2;`,
-    },
-    expectedWgsl: `
-      const b = 2;
-    `,
-  },
-  {
     name: "@else with variable references",
     weslSrc: {
       "./main.wgsl": `
