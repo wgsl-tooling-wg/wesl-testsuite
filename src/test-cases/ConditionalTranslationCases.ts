@@ -530,4 +530,255 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
   // },
 ];
 
+export const elseCases: WgslTestSrc[] = [
+  {
+    name: "@else basic test",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(false) const a = 1;
+        @else const a = 2;
+        const b = a;`,
+    },
+    expectedWgsl: `
+      const a = 2;
+      const b = a;
+    `,
+  },
+  {
+    name: "@if(true) @else",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(true) const a = 1;
+        @else const a = 2;
+        const b = a;`,
+    },
+    expectedWgsl: `
+      const a = 1;
+      const b = a;
+    `,
+  },
+  {
+    name: "@else with functions",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(false) fn f() -> u32 { return 1; }
+        @else fn f() -> u32 { return 2; }
+        fn main() -> u32 { return f(); }`,
+    },
+    expectedWgsl: `
+      fn f() -> u32 { return 2; }
+      fn main() -> u32 { return f(); }
+    `,
+  },
+  {
+    name: "@else with struct members",
+    weslSrc: {
+      "./main.wgsl": `
+        struct S {
+          @if(false) m: u32,
+          @else m: f32,
+        }
+        var<private> v: S;`,
+    },
+    expectedWgsl: `
+      struct S { m: f32 }
+      var<private> v: S;
+    `,
+  },
+  {
+    name: "@else with statements",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          @if(false) let a = 1;
+          @else let a = 2;
+        }`,
+    },
+    expectedWgsl: `
+      fn main() {
+        let a = 2;
+      }
+    `,
+  },
+  {
+    name: "@else with compound statements",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          @if(false) { let a = 1; }
+          @else { let a = 2; }
+        }`,
+    },
+    expectedWgsl: `
+      fn main() {
+        { let a = 2; }
+      }
+    `,
+  },
+  {
+    name: "nested @if/@else",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          @if(true) {
+            @if(false) const a = 1;
+            @else const a = 2;
+            const b = a;
+          } @else {
+            const a = 3;
+            const b = a;
+          }
+        }`,
+    },
+    expectedWgsl: `
+      fn main() {
+        {
+          const a = 2;
+          const b = a;
+        }
+      }
+    `,
+  },
+  {
+    name: "multiple @if/@else chains",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          @if(false) const a = 1;
+          @else const a = 2;
+
+          @if(true) const b = 3;
+          @else const b = 4;
+
+          const c = a + b;
+        }`,
+    },
+    expectedWgsl: `
+      fn main() {
+        const a = 2;
+        const b = 3;
+        const c = a + b;
+      }
+    `,
+  },
+  {
+    name: "@else with conditional import",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(false) import package::a::val;
+        @else import package::b::val;
+
+        const c = val;`,
+      "./a.wgsl": `const val = 1;`,
+      "./b.wgsl": `const val = 2;`,
+    },
+    expectedWgsl: `
+      const c = val;
+      const val = 2;
+    `,
+    underscoreWgsl: `
+      const c = package_b_val;
+      const package_b_val = 2;
+    `,
+  },
+  {
+    name: "@else declaration shadowing",
+    weslSrc: {
+      "./main.wgsl": `
+        const x = 1;
+        fn main() {
+          @if(false) const x = 2;
+          @else const y = x;
+        }
+        `,
+    },
+    expectedWgsl: `
+      const x = 1;
+      fn main() {
+        const y = x;
+      }
+    `,
+  },
+  {
+    name: "@else with variable references",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(true) var<private> x = 7;
+        @else var<private> y = 4;
+
+        @compute @workgroup_size(1)
+        fn main() {
+          @if(true) { 
+            x = 5; 
+          }
+          @else { 
+            y = 9;
+          }
+        }`,
+    },
+    expectedWgsl: `
+      var<private> x = 7;
+      @compute @workgroup_size(1) fn main() {
+        {
+          x = 5;
+        }
+      }
+    `,
+  },
+  {
+    name: "@else with variable references false condition",
+    weslSrc: {
+      "./main.wgsl": `
+        @if(false) var<private> x = 7;
+        @else var<private> y = 4;
+
+        @compute @workgroup_size(1)
+        fn main() {
+          @if(false) { 
+            x = 5; 
+          }
+          @else { 
+            y = 9;
+          }
+        }`,
+    },
+    expectedWgsl: `
+      var<private> y = 4;
+      @compute @workgroup_size(1) fn main() {
+        {
+          y = 9;
+        }
+      }
+    `,
+  },
+  {
+    name: "@else with package function reference",
+    notes: "Declarations referenced from filtered @else blocks are NOT included",
+    weslSrc: {
+      "./main.wgsl": `
+        fn main() {
+          @if(true) { }
+          @else {
+            package::util::bar();
+          }
+        }`,
+      "./util.wgsl": `
+        const_assert 1 < 0;
+        fn bar() { }`,
+    },
+    expectedWgsl: `
+      fn main() {
+        { }
+      }
+    `,
+    underscoreWgsl: `
+      fn main() {
+        { }
+      }
+    `,
+  },
+];
+
+conditionalTranslationCases.push(...elseCases);
+
 export default conditionalTranslationCases;
