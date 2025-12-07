@@ -58,6 +58,34 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     expectedWgsl: "var<private> foo = 10;",
   },
   {
+    name: "@if on function const declaration",
+    weslSrc: {
+      "./main.wgsl": `
+        fn func() {
+          @if(true) const foo = 10;
+          @if(false) const bar = 10;
+        }`,
+    },
+    expectedWgsl: `
+      fn func() {
+        const foo = 10;
+      }`,
+  },
+  {
+    name: "@if on function variable declaration",
+    weslSrc: {
+      "./main.wgsl": `
+        fn func() {
+          @if(true) var foo = 10;
+          @if(false) var bar = 10;
+        }`,
+    },
+    expectedWgsl: `
+      fn func() {
+        var foo = 10;
+      }`,
+  },
+  {
     name: "@if on type alias",
     weslSrc: {
       "./main.wgsl": `
@@ -126,6 +154,62 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
     expectedWgsl: `
       fn func() {
         { const foo = 10; }
+      }`,
+  },
+  {
+    // NOTE: wesl-rs does not support this: `@if(true) (foo) = 1;`
+    name: "@if on assignment statement",
+    weslSrc: {
+      "./main.wgsl": `
+        fn func() {
+          var foo = 10;
+          @if(true) _ = 1;
+          @if(false) _ = 2;
+          @if(true) foo = 1;
+          @if(false) foo = 2;
+        }`,
+    },
+    expectedWgsl: `
+      fn func() {
+        var foo = 10;
+        _ = 1;
+        foo = 1;
+      }`,
+  },
+  {
+    name: "@if on increment statement",
+    weslSrc: {
+      "./main.wgsl": `
+        fn func() {
+          var foo = 10;
+          var bar = 10;
+          @if(true) foo++;
+          @if(false) bar++;
+        }`,
+    },
+    expectedWgsl: `
+      fn func() {
+        var foo = 10;
+        var bar = 10;
+        foo++;
+      }`,
+  },
+  {
+    name: "@if on decrement statement",
+    weslSrc: {
+      "./main.wgsl": `
+        fn func() {
+          var foo = 10;
+          var bar = 10;
+          @if(true) foo--;
+          @if(false) bar--;
+        }`,
+    },
+    expectedWgsl: `
+      fn func() {
+        var foo = 10;
+        var bar = 10;
+        foo--;
       }`,
   },
   {
@@ -515,19 +599,6 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       fn package_util_g() { let a = 9; }
     `,
   },
-  // {
-  //   name: "",
-  //   weslSrc: {
-  //     "./main.wgsl": `
-  //     `,
-  //     "./util.wgsl": `
-  //      `,
-  //   },
-  //   expectedWgsl: `
-  //   `,
-  //   underscoreWgsl: `
-  //   `,
-  // },
 ];
 
 export const elseCases: WgslTestSrc[] = [
@@ -753,7 +824,8 @@ export const elseCases: WgslTestSrc[] = [
   },
   {
     name: "@else with package function reference",
-    notes: "Declarations referenced from filtered @else blocks are NOT included",
+    notes:
+      "Declarations referenced from filtered @else blocks are NOT included",
     weslSrc: {
       "./main.wgsl": `
         fn main() {
