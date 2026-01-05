@@ -5,10 +5,10 @@ import type { BulkTest } from "./TestSchema.ts";
 export const BaseDir = new URL("..", import.meta.url);
 
 // Modeled after https://github.com/gfx-rs/wgpu/blob/c0a580d6f0343a725b3defa8be4fdf0a9691eaad/xtask/src/cts.rs
-export async function fetchBulkTest(bulkTest: BulkTest) {
+export async function fetchBulkTest(bulkTest: BulkTest, root: URL = BaseDir) {
   if (!bulkTest.git) return;
 
-  const baseDir = new URL(bulkTest.baseDir, BaseDir);
+  const baseDir = new URL(bulkTest.baseDir, root);
   if (
     await fs.access(baseDir).then(
       () => true,
@@ -48,6 +48,7 @@ export async function fetchBulkTest(bulkTest: BulkTest) {
       );
     }
   } else {
+    await fs.mkdir(root, { recursive: true });
     const cloneResult = spawnSync(
       "git",
       [
@@ -59,13 +60,13 @@ export async function fetchBulkTest(bulkTest: BulkTest) {
         bulkTest.baseDir,
       ],
       {
-        cwd: BaseDir,
+        cwd: root,
       }
     );
     if (cloneResult.status !== 0) {
       throw new Error(
         `Cloning ${bulkTest.git.url} ${bulkTest.git.revision} failed ` +
-          cloneResult.stderr.toString()
+          cloneResult.stderr?.toString()
       );
     }
   }
