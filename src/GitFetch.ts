@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 /**
  * Clone or fetch+checkout a git repo to a local directory.
@@ -16,7 +17,8 @@ export async function gitFetch(url: string, revision: string, targetDir: URL): P
   } else {
     const parent = new URL(".", targetDir);
     await fs.mkdir(parent, { recursive: true });
-    git(["clone", "--depth=1", url, "--revision", revision, targetDir.pathname], parent, `Cloning ${url} ${revision}`);
+    const target = fileURLToPath(targetDir);
+    git(["clone", "--depth=1", url, "--revision", revision, target], parent, `Cloning ${url} ${revision}`);
   }
 }
 
