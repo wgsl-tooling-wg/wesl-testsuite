@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
  */
 export async function gitFetch(url: string, revision: string, targetDir: URL): Promise<void> {
   if (await exists(targetDir)) {
+    if (gitHead(targetDir) === revision) return; // already at target
     if (!git(["cat-file", "commit", revision], targetDir)) {
       git(["fetch", "--quiet"], targetDir, `Fetching ${url} ${revision}`);
     }
@@ -20,6 +21,11 @@ export async function gitFetch(url: string, revision: string, targetDir: URL): P
     const target = fileURLToPath(targetDir);
     git(["clone", "--depth=1", url, "--revision", revision, target], parent, `Cloning ${url} ${revision}`);
   }
+}
+
+function gitHead(cwd: URL): string | undefined {
+  const result = spawnSync("git", ["rev-parse", "HEAD"], { cwd });
+  return result.status === 0 ? result.stdout?.toString().trim() : undefined;
 }
 
 function exists(path: URL): Promise<boolean> {
