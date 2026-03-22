@@ -6,7 +6,9 @@
     "build": "node ./src/generate-json.ts",
     "build:watch": "node --watch ./src/generate-json.ts"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./fetch-bulk-tests": "./src/fetch-bulk-tests.ts",
