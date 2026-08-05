@@ -503,17 +503,17 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
         fn func() {}`,
     },
     expectedWgsl: `
-      const_assert 0 < 1;
       fn main() {
         func();
       }
+      const_assert 0 < 1;
       fn func() {}`,
     underscoreWgsl: `
-      const_assert 0 < 1;
       fn main() {
         package_foo_func();
       }
 
+      const_assert 0 < 1;
       fn package_foo_func() {}`,
   },
   {
@@ -535,20 +535,20 @@ export const conditionalTranslationCases: WgslTestSrc[] = [
       `,
     },
     expectedWgsl: `
-      const_assert 0 < 1;
       fn main() {
         func();
         bar();
       }
+      const_assert 0 < 1;
       fn func() {}
       fn bar() {}
     `,
     underscoreWgsl: `
-      const_assert 0 < 1;
       fn main() {
         package_foo_func();
         package_foo_bar();
       }
+      const_assert 0 < 1;
       fn package_foo_func() {}
       fn package_foo_bar() {}
     `,
